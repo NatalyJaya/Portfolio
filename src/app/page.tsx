@@ -1,41 +1,48 @@
 "use client";
 
-
+import Navbar from "./navbar"
 import Image from "next/image";
 import instagram from './assets/img/instagram.png'
 import linkedin from './assets/img/linkedin.png'
 import github from './assets/img/github.png'
 import gmail from './assets/img/gmail.png'
 import { Typewriter } from 'react-simple-typewriter'; 
+import {Roboto} from 'next/font/google'
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: '400',
+});
 
 export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-6xl font-bold text-center sm:text-left text-[white]">
-        <Typewriter
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start  justify-center">
+         
+      <h1 className="text-6xl font-bold text-center sm:text-left text-[white]">
+          <Typewriter
             words={['Hi there! I am Nat']}
-            loop={1}                 // Para repetir el efecto en bucle
-            cursor                      // Muestra el cursor de tipeo
-            cursorStyle="|"             // Define el estilo del cursor (opcional)
-            typeSpeed={70}              // Velocidad de tipeo
-            deleteSpeed={50}            // Velocidad de borrado
-            delaySpeed={1000}           // Retraso entre las palabras
-
+            loop={1}                 
+            cursor
+            cursorStyle="|"             
+            typeSpeed={70}              
+            deleteSpeed={50}            
+            delaySpeed={1000}           
           />
         </h1>
+        <p className={`text-4xl font-bold text-center sm:text-left text-gray-300`}>
+          debugging in real life
+        </p>
+        <p className="text-2xl text-center sm:text-left text-gray-100">
+          I'm a computer science student with a passion for building innovative solutions.
+        </p>
+       
+        
     
 
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        {/* <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdirs-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        > */}
-         
-         
+      
+      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">         
          <a
           href="https://www.instagram.com/natvlyjs/"
           target="_blank"
@@ -82,8 +89,12 @@ export default function Home() {
         >
          
         </a>
-      </footer>
-    </div>
+        </footer>
+        </div>
+       
+      
+      
+    
   );
 }
 
