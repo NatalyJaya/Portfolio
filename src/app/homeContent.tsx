@@ -10,8 +10,8 @@ export default function HomeContent() {
   return (
     <main className="flex flex-col gap-8 row-start-2 sm:flex-row sm:items-center justify-between w-full px-6">
       
-      <div className="flex flex-col items-center sm:items-start">
-        <h1 className="text-6xl font-bold text-center sm:text-left text-white">
+      <div className="flex flex-col items-center sm:items-start ml-64 ">
+        <h1 className="text-6xl font-bold text-center sm:text-left text-white mb-8">
           <Typewriter
             words={['Hi there! I am Nat']}
             loop={1}
@@ -22,16 +22,16 @@ export default function HomeContent() {
             delaySpeed={1000}
           />
         </h1>
-        <p className="text-4xl font-bold text-center sm:text-left text-gray-300 fade-in-up">
+        <p className="text-4xl font-bold text-center sm:text-left text-gray-300 fade-in-up mb-8">
           debugging in real life
         </p>
-        <p className="text-2xl text-center sm:text-left text-gray-100 fade-in-up">
+        <p className="text-2xl text-center sm:text-left text-gray-100 fade-in-up ">
           I'm a computer science student with a passion for building innovative solutions.
         </p>
       </div>
       
       {/* Imagen Oshawott alineada a la derecha */}
-      <div className=" flex-col-reverse self-center sm:self-middle ml-auto sm:ml-0 overflow-hidden rounded-md w-[300px] h-[300px] mr-64 ">
+      <div className=" flex-col-reverse self-center sm:self-middle ml-auto sm:ml-0 overflow-hidden rounded-md w-[300px] h-[300px] mr-64 fade-in-up">
         <Image src={oshawott} width={300} height={300} alt="Oshawott" className="object-cover" />
       </div>
     </main>
