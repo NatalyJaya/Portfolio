@@ -14,17 +14,17 @@ const Navbar = () => {
 
         
         <div className="flex space-x-6 items-center">
-          <Link href={'#homeContent'} className="text-white text-lg hover:text-gray-400">
-            Home
+          <Link href={'#homeContent'} className="text-white text-lg hover:text-gray-200">
+            /home
           </Link>
-          <Link href={'/about'} className="text-white text-lg hover:text-gray-400">
-            About
+          <Link href={'#about'} className="text-white text-lg hover:text-gray-400">
+            /about
           </Link>
           <Link href={'/services'} className="text-white text-lg hover:text-gray-400">
-            Services
+            /services
           </Link>
           <Link href={'/contact'} className="text-white text-lg hover:text-gray-400">
-            Contact
+            /contact
           </Link>
         </div>
       </div>
