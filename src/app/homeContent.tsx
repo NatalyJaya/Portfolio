@@ -28,8 +28,17 @@ export default function HomeContent() {
         <p className="text-2xl text-center sm:text-left text-gray-100 fade-in-up ">
           I'm a computer science student with a passion for building innovative solutions.
         </p>
+        <a
+      href="./assets/CV.pdf"
+      download="CV.pdf"      
+      className='mt-6 px-12 py-5 border-2 border-[rgba(255,255,255,0.8)] text-white text-lg font-semibold rounded-md hover:bg-[rgba(255,255,255,0.1)] transition duration-200 ease-in-out fade-in-up'
+      >
+        Download CV
+      </a>
+      
       </div>
       
+
       {/* Imagen Oshawott alineada a la derecha */}
       <div className=" flex-col-reverse self-center sm:self-middle ml-auto sm:ml-0 overflow-hidden rounded-md w-[300px] h-[300px] mr-64 fade-in-up">
         <Image src={oshawott} width={300} height={300} alt="Oshawott" className="object-cover" />
