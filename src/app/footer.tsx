@@ -7,7 +7,7 @@ import gmail from './assets/img/gmail.png';
 
 export default function Footer() {
   return (
-    <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">         
+    <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center ">         
       <a
         href="https://www.instagram.com/natvlyjs/"
         target="_blank"

@@ -3,6 +3,7 @@
 import Navbar from "./navbar";
 import Footer from "./footer"; // Importa el Footer
 import HomeContent from "./homeContent"; // Importa el contenido principal
+import PostFooter from "./postFooter";
 
 
 
@@ -14,6 +15,7 @@ export default function Home() {
       <HomeContent />
       
       <Footer /> 
+     <PostFooter />
     </div>
   );
 }
