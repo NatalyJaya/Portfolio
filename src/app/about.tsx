@@ -4,7 +4,7 @@ import imgAbout from "./assets/img/imgAbout.jpg";
 
 export default function About() {
   return (
-    <section className="flex flex-col items-center sm:flex-row sm:items-start p-6 ml-[10%] fade-in-up">
+    <section className="flex flex-col items-center sm:flex-row sm:items-start ml-[10%] fade-in-up">
       <div className="sm:w-[50%] p-4">
         <h2 className="text-6xl font-bold text-center sm:text-left text-white mb-8">
           /about

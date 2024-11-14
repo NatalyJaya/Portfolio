@@ -20,22 +20,22 @@ export default function Languages() {
     }
 
     const all_images = sliceArray([
-        { name: "HTML", src: html },
         { name: "Java", src: java },
-        { name: "JavaScript", src: javascript },
         { name: "Python", src: python },
-        { name: "React", src: react },
-        { name: "Tailwind", src: tailwind_css },
+        { name: "JavaScript", src: javascript },
+        { name: "HTML", src: html },
         { name: "CSS", src: css },
+        { name: "Tailwind", src: tailwind_css },
+        { name: "React", src: react },
         { name: "Next.js", src: nextjs },
     ],3);
 
     return (
         <div className="text-4xl font-bold text-center  sm:text-left text-white mb-8 mx-[10%]">
             <h2 className="text-4xl font-bold mb-6">Languages</h2>
-            <section className="flex flex-wrap justify-center gap-4 py-4 items-center ">
+            <section className="flex flex-col justify-center gap-4 py-4 items-center ">
                 {all_images.map((image_line,index) => (
-                    <div key={index} className="flex flex-wrap justify-center gap-4 p-4 items-center ">
+                    <div key={index} className="flex flex-row justify-center gap-16 p-4 items-center ">
                         {image_line.map((i, index) => (
                             <div key={index} className=" p-2 rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
                                 <Image 
