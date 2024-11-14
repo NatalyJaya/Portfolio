@@ -11,7 +11,15 @@ import nextjs from "./assets/img/nextjs.png"
 
 
 export default function Languages() {
-    const images = [
+    function sliceArray(arr: any[], n: number): any[][] {
+        const result: any[][] = [];
+        for (let i = 0; i < arr.length; i += n) {
+            result.push(arr.slice(i, i + n));
+        }
+        return result;
+    }
+
+    const all_images = sliceArray([
         { name: "HTML", src: html },
         { name: "Java", src: java },
         { name: "JavaScript", src: javascript },
@@ -20,22 +28,26 @@ export default function Languages() {
         { name: "Tailwind", src: tailwind_css },
         { name: "CSS", src: css },
         { name: "Next.js", src: nextjs },
-    ];
+    ],3);
 
     return (
-        <div className="ml-64 text-4xl font-bold text-center  sm:text-left text-white mb-8 mr-64">
+        <div className="text-4xl font-bold text-center  sm:text-left text-white mb-8 mx-[10%]">
             <h2 className="text-4xl font-bold mb-6">Languages</h2>
-            <section className="flex flex-wrap justify-center gap-4 p-4 items-center ">
-                {images.map((i, index) => (
-                    <div key={index} className=" p-2 rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
-                        <Image 
-                            src={i.src} 
-                            alt={i.name} 
-                            width={100} 
-                            height={100}
-                            className="object-contain"
-                        />
-                        <p className="text-center mt-2 text-sm text-white font-medium">{i.name}</p>
+            <section className="flex flex-wrap justify-center gap-4 py-4 items-center ">
+                {all_images.map((image_line,index) => (
+                    <div key={index} className="flex flex-wrap justify-center gap-4 p-4 items-center ">
+                        {image_line.map((i, index) => (
+                            <div key={index} className=" p-2 rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+                                <Image 
+                                    src={i.src} 
+                                    alt={i.name} 
+                                    width={100} 
+                                    height={100}
+                                    className="object-contain"
+                                />
+                                <p className="text-center mt-2 text-sm text-white font-medium">{i.name}</p>
+                            </div>
+                        ))}
                     </div>
                 ))}
             </section>

@@ -10,7 +10,7 @@ export default function HomeContent() {
   return (
     <main className="flex flex-col gap-8 row-start-2 sm:flex-row sm:items-center justify-between w-full px-6">
       
-      <div className="flex flex-col items-center sm:items-start ml-64 ">
+      <div className="flex flex-col items-center sm:items-start ml-[10%] ">
         <h1 className="text-6xl  font-bold text-center sm:text-left text-white mb-8">
           <Typewriter
             words={['Hi there! I am Nat']}
