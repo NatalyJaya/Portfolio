@@ -20,7 +20,10 @@ const Navbar = () => {
           <Link href={'#about'} className="text-white text-lg hover:text-gray-400">
             /about
           </Link>
-          <Link href={'/services'} className="text-white text-lg hover:text-gray-400">
+          <Link href={'/trajectory'} className="text-white text-lg hover:text-gray-400">
+            /services
+          </Link>
+          <Link href={'/porjects'} className="text-white text-lg hover:text-gray-400">
             /services
           </Link>
           <Link href={'/contact'} className="text-white text-lg hover:text-gray-400">

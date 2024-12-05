@@ -17,7 +17,7 @@ export default function Footer() {
         <Image src={devpost} width={20} height={20} alt="devpost icon" /> Devpost
       </a>
       <a
-        href="https://www.linkedin.com/in/natvlyjs/"
+        href="https://www.linkedin.com/in/nataly-jaya-salazar-8764252a0/"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"

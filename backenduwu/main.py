@@ -1,7 +1,7 @@
 from email.mime.multipart import MIMEMultipart
 from fastapi import FastAPI;
 from fastapi.responses import JSONResponse;
-
+from pydantic import BaseModel
 
 app = FastAPI ()
 
@@ -10,6 +10,7 @@ def getInfo ():
     return JSONResponse(content={"message": "Hello, World!"}, media_type="application/json")
 
 @app.post('/mail') #apikey de porteccion por si se publica !!!
+
 def postMail (nom:str, correu:str, titol:str, msg:str):
 
     msg = MIMEMultipart('related')
@@ -37,3 +38,13 @@ def postMail (nom:str, correu:str, titol:str, msg:str):
     except Exception as e:
         raise e
         raise HTTPException(status_code=500, detail=str(e))
+
+class Message(BaseModel):
+    name: str
+    email: str
+    message: str
+
+@app.post("/send-message")
+async def send_message(message: Message):
+    # Lógica para manejar el mensaje (guardar en la base de datos, enviar correo, etc.)
+    return {"message": "Message received successfully"}
