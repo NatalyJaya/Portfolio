@@ -1,50 +1,66 @@
 from email.mime.multipart import MIMEMultipart
-from fastapi import FastAPI;
-from fastapi.responses import JSONResponse;
+from email.mime.text import MIMEText
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from smtplib import SMTP_SSL
 
-app = FastAPI ()
+# Configuración ficticia para el ejemplo
+class Config:
+    MAIL_SERVER = "smtp.example.com"
+    MAIL_PORT = 465
+    MAIL_USERNAME = "your_email@example.com"
+    MAIL_PASSWORD = "your_password"
+    MAIL_FROM = "your_email@example.com"
+    ENABLE_MAIL_SENDING = True
+
+app = FastAPI()
 
 @app.get('/info')
-def getInfo ():
+def get_info():
     return JSONResponse(content={"message": "Hello, World!"}, media_type="application/json")
 
-@app.post('/mail') #apikey de porteccion por si se publica !!!
 
-def postMail (nom:str, correu:str, titol:str, msg:str):
+@app.post('/mail')
+def post_mail(nom: str, correu: str, titol: str, msg: str):
+    """
+    Enviar un correo electrónico.
+    """
+    email_msg = MIMEMultipart('related')
+    email_msg['Subject'] = titol
+    email_msg['From'] = Config.MAIL_FROM
+    email_msg['To'] = correu
 
-    msg = MIMEMultipart('related')
-    msg['Subject'] = mail.subject
-    msg['From'] = Configuration.mail.from_mail
-    msg['To'] = mail.receiver_mail
     try:
-        html = MIMEText(mail.template.to_html(mail.fields.split(',')),
-                        'html')
-        msg.attach(html)
-        if Configuration.mail.send_mails:
-            # server.sendmail(Configuration.mail.from_mail, [user.email],
-            with SMTP_SSL(Configuration.mail.server,
-                        Configuration.mail.port) as server:
-                server.login(Configuration.mail.username,
-                            Configuration.mail.password)
+        # Crear contenido HTML para el correo
+        html = MIMEText(msg, 'html')
+        email_msg.attach(html)
+
+        if Config.ENABLE_MAIL_SENDING:
+            # Enviar el correo
+            with SMTP_SSL(Config.MAIL_SERVER, Config.MAIL_PORT) as server:
+                server.login(Config.MAIL_USERNAME, Config.MAIL_PASSWORD)
                 server.sendmail(
-                    Configuration.mail.from_mail,
-                    [mail.receiver_mail.replace(' ', '').split(',')],
-                    msg.as_string())
+                    Config.MAIL_FROM,
+                    [correu],
+                    email_msg.as_string()
+                )
         else:
-            print(
-                'Mail sending is disabled i you really want to send mails enable it in the config'
-            )
+            print("El envío de correos está deshabilitado. Habilítalo en la configuración.")
     except Exception as e:
-        raise e
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error al enviar el correo: {str(e)}")
+
 
 class Message(BaseModel):
     name: str
     email: str
     message: str
 
+
 @app.post("/send-message")
 async def send_message(message: Message):
-    # Lógica para manejar el mensaje (guardar en la base de datos, enviar correo, etc.)
+    """
+    Endpoint para manejar mensajes enviados por el usuario.
+    """
+    # Aquí puedes agregar lógica para guardar el mensaje en una base de datos, enviar correos, etc.
     return {"message": "Message received successfully"}

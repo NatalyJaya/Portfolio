@@ -1,14 +1,15 @@
-"use client";
+import React from "react";
 
 export default function Mail() {
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
 
         // Obtiene los valores del formulario
-        const formData = {
-            name: event.target.name.value,
-            email: event.target.email.value,
-            message: event.target.message.value,
+        const formData = new FormData(event.currentTarget);
+        const data = {
+            name: formData.get("name") as string,
+            email: formData.get("email") as string,
+            message: formData.get("message") as string,
         };
 
         try {
@@ -18,13 +19,14 @@ export default function Mail() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(data),
             });
 
             if (response.ok) {
-                const result = await response.json();
                 alert("Message sent successfully!"); // Muestra una alerta de éxito
             } else {
+                const errorData = await response.json();
+                console.error("Server Error:", errorData);
                 alert("Failed to send message. Please try again.");
             }
         } catch (error) {
@@ -34,8 +36,8 @@ export default function Mail() {
     };
 
     return (
-        <div className="p-8 rounded-lg shadow-lg mx-[10%]">
-            <div className="text-4xl font-bold text-center sm:text-left text-white mb-8 border-b-amber-100">
+        <div className="p-8 rounded-lg shadow-lg mx-[10%] ">
+            <div className="text-4xl font-bold text-center sm:text-left text-white mb-8">
                 <h2>Contact Me</h2>
             </div>
             <form onSubmit={handleSubmit}>
@@ -77,7 +79,7 @@ export default function Mail() {
                         name="message"
                         className="w-full px-4 py-2 text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Write your message here..."
-                        rows="5"
+                        rows={5}
                         required
                     ></textarea>
                 </div>
@@ -85,7 +87,7 @@ export default function Mail() {
                 <div className="text-center">
                     <button
                         type="submit"
-                        className="px-6 py-3 bg-gray-300 text-gray-900 text-lg font-semibold rounded-md hover:bg-gray-500 transition duration-200 ease-in-out"
+                        className="px-6 py-3 bg-gray-300 text-black text-lg font-semibold rounded-md hover:bg-gray-500 transition duration-200 ease-in-out"
                     >
                         Send Message
                     </button>
@@ -94,6 +96,3 @@ export default function Mail() {
         </div>
     );
 }
-
-
-
