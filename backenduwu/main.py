@@ -29,7 +29,7 @@ def post_mail(nom: str, correu: str, titol: str, msg: str):
     email_msg = MIMEMultipart('related')
     email_msg['Subject'] = titol
     email_msg['From'] = Config.MAIL_FROM
-    email_msg['To'] = correu
+    email_msg['To'] = njayasalazar@gmail.com
 
     try:
         # Crear contenido HTML para el correo
@@ -46,9 +46,9 @@ def post_mail(nom: str, correu: str, titol: str, msg: str):
                     email_msg.as_string()
                 )
         else:
-            print("El envío de correos está deshabilitado. Habilítalo en la configuración.")
+            print("Email sending is disabled. Enable it in the settings..")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al enviar el correo: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error to send the message: {str(e)}")
 
 
 class Message(BaseModel):
