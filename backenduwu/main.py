@@ -2,6 +2,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from smtplib import SMTP_SSL
 
@@ -16,13 +17,21 @@ class Config:
 
 app = FastAPI()
 
+#AUTOO
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Cambiar esto a la URL específica de React en producción
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get('/info')
 def get_info():
     return JSONResponse(content={"message": "Hello, World!"}, media_type="application/json")
 
 
 @app.post('/mail')
-def post_mail(nom: str, correu: str, titol: str, msg: str):
+def post_mail(correu: str, titol: str, msg: str):
     """
     Enviar un correo electrónico.
     """
@@ -63,4 +72,6 @@ async def send_message(message: Message):
     Endpoint para manejar mensajes enviados por el usuario.
     """
     # Aquí puedes agregar lógica para guardar el mensaje en una base de datos, enviar correos, etc.
+    return post_mail(message.email, f"{message.name} guarra", f"<p>{message.message}</p>")
+
     return {"message": "Message received successfully"}
