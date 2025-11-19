@@ -23,14 +23,14 @@ export default function Trajectory() {
                             </div>
                         </div>
                         {index === timeline.length - 2 && (
-                            <div className="flex justify-center w-full mt-4">
+                            <div className="flex justify-center w-full mt-4 space-x-4">
                                 <div className="bg-gray-600 text-white p-4 rounded-lg shadow-lg border-dashed border-2 border-gray-400 space-between" style={{ width: "210px", height: "80px" }}>
                                     <h3 className="text-xl font-semibold">
-                                        <p className="italic">WINNER</p> HackUAB 2024
+                                        <p className=" text-center">HackUAB 2024</p>  <p className="italic text-center text-sm">WINNER</p>
                                     </h3>
                                 </div>
-                                <div className="bg-gray-600 text-white p-4 rounded-lg shadow-lg border-dashed border-2 border-gray-400 " style={{ width: "210px", height: "80px" }}>
-                                    <h3 className="text-xl font-semibold">LauzHack 2024</h3>
+                                <div className="bg-gray-600 text-white p-4 rounded-lg shadow-lg border-dashed border-2 border-gray-400 align-middle inset-0 " style={{ width: "210px", height: "80px" }}>
+                                    <h3 className="text-xl font-semibold text-center align-middle">LauzHack 2024</h3>
                                 </div>
                             </div>
                         )}
