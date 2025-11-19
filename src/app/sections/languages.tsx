@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
-import html from "./assets/img/html.png";
-import java from "./assets/img/java.png";
-import javascript from "./assets/img/javascript.png";
-import python from "./assets/img/python.png";
-import react from "./assets/img/react.png";
-import tailwind_css from "./assets/img/tailwind_css.png";
-import css from "./assets/img/css.png";
-import nextjs from "./assets/img/nextjs.png"
+import html from "../assets/img/html.png";
+import java from "../assets/img/java.png";
+import javascript from "../assets/img/javascript.png";
+import python from "../assets/img/python.png";
+import react from "../assets/img/react.png";
+import tailwind_css from "../assets/img/tailwind_css.png";
+import css from "../assets/img/css.png";
+import nextjs from "../assets/img/nextjs.png"
 
 
 export default function Languages() {

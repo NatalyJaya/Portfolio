@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image"; // Import the Image component
-import universo from "./assets/img/universo.png"; // Use the correct path
+import universo from "../assets/img/universo.png"; // Use the correct path
 
 const Navbar = () => {
   return (
@@ -20,7 +20,7 @@ const Navbar = () => {
           <Link href={'#about'} className="text-white text-lg hover:text-gray-400">
             /about
           </Link>
-          <Link href={'/trajectory'} className="text-white text-lg hover:text-gray-400">
+          <Link href={'/src/app/sections/trajectory.tsx'} className="text-white text-lg hover:text-gray-400">
             /services
           </Link>
           <Link href={'/porjects'} className="text-white text-lg hover:text-gray-400">
