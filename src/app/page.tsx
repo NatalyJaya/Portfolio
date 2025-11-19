@@ -30,14 +30,15 @@ export default function Home() {
               <Languages/>
           </section>
 
-          <section className="flex-grow">
+          {/* <section className="flex-grow">
               <Trajectory/>
           </section>
+            */}
 
           <section className="flex-grow">
           <Project/>
-
           </section>
+
           <section className="flex-grow">
               <Mail/>
           </section>
