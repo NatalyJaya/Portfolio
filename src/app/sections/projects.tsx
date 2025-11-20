@@ -1,14 +1,11 @@
 "use Client";
 import {projects} from "NatalyJaya/app/data/githubData";
 
-import xarxes from "../assets/img/xarxes_proj.png"
-
 import Image from "next/image";
 
 export default function Project(){
 
     const project = projects[0];
-
 
     return (
         <div className="mx-[10%]">
@@ -17,11 +14,10 @@ export default function Project(){
 
                 <div className=" col-span-2 border-l-blue-50 h-[550px] w-full rounded-2xl shadow-white place-content-center">
                         <Image
-                            src={xarxes}
+                            src={project.image}
                             alt={project.title}
                             className="rounded-2xl shadow-background object-cover col-end-3"
                         />
-
                 </div>
                 <div className=" place-content-center ">
                     <div className="rounded-2xl bg-blue-300 h-[50%]">
