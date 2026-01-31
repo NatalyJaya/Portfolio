@@ -19,9 +19,21 @@ export default function Project(){
                             className="rounded-2xl shadow-background object-cover col-end-3"
                         />
                 </div>
-                <div className=" place-content-center ">
-                    <div className="rounded-2xl bg-blue-300 h-[50%]">
-                        {project.description}
+                <div className=" place-content-center text-black ">
+                    <div className="rounded-2xl bg-gray-200 h-[90%]  p-6 grid grid-rows-4 gap-y-2 ">
+                        <div className=" italic text-2xl ">
+                            {project.title}
+
+                        </div>
+                        <div>
+                            {project.description}
+                        </div>
+                        <div>
+                            {project.tags}
+                        </div>
+                        <div>
+                            {project.motive}
+                        </div>
                     </div>
 
                 </div>

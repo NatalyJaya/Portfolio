@@ -26,7 +26,7 @@ export default function HomeContent() {
           debugging in real life
         </p>
         <p className="text-2xl text-center sm:text-left text-gray-100 fade-in-up ">
-          I'm a computer science student with a passion for building innovative solutions.
+          I&apos;m a computer science student with a passion for building innovative solutions.
         </p>
         <a
       href="../assets/CV.pdf"
