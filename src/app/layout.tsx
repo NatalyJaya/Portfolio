@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./main/globals.css";
+import {Work_Sans} from 'next/font/google';
+
+const workSans = Work_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-work-sans',
+});
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

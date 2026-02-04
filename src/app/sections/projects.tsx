@@ -1,46 +1,86 @@
 "use Client";
 import {projects} from "NatalyJaya/app/data/githubData";
-
+import { useState } from "react";
 import Image from "next/image";
 
 export default function Project(){
 
-    const project = projects[0];
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const nextProject = () => {
+        setCurrentIndex((prev) => (prev + 1) % projects.length);
+    };
+
+    const prevProject = () => {
+        setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    };
+
+    const project = projects[currentIndex];
 
     return (
-        <div className="mx-[10%]">
-            <div className="text-4xl font-bold text-center sm:text-left text-white "> Github Projects</div>
-            <div className="grid grid-cols-3 gap-2 my-[5%]">
-
-                <div className=" col-span-2 border-l-blue-50 h-[550px] w-full rounded-2xl shadow-white place-content-center">
-                        <Image
-                            src={project.image}
-                            alt={project.title}
-                            className="rounded-2xl shadow-background object-cover col-end-3"
-                        />
-                </div>
-                <div className=" place-content-center text-black ">
-                    <div className="rounded-2xl bg-gray-200 h-[90%]  p-6 grid grid-rows-4 gap-y-2 ">
-                        <div className=" italic text-2xl ">
-                            {project.title}
-
-                        </div>
-                        <div>
-                            {project.description}
-                        </div>
-                        <div>
-                            {project.tags}
-                        </div>
-                        <div>
-                            {project.motive}
-                        </div>
-                    </div>
-
-                </div>
-
+        <div className="mx-[10%] text-white">
+            <div className="text-4xl font-bold text-center sm:text-left mb-8">
+                Github Projects
             </div>
 
-        </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch relative">
 
+                {/* 2. Contenedor de Imagen con Flechas de Navegación */}
+                <div className="md:col-span-2 relative group min-h-[300px]">
+                    <Image
+                        src={project.image}
+                        alt={project.title}
+                        width={800} // Ajusta según necesites
+                        height={500}
+                        className="rounded-2xl shadow-lg object-cover w-full h-full transition-all duration-500"
+                    />
+
+                    {/* Botones de navegación (Estilo carrusel) */}
+                    <button
+                        onClick={prevProject}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full hover:bg-black/80 transition"
+                    >
+                        ◀
+                    </button>
+                    <button
+                        onClick={nextProject}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 p-2 rounded-full hover:bg-black/80 transition"
+                    >
+                        ▶
+                    </button>
+                </div>
+
+                {/* 3. Panel de Información */}
+                <div className="text-black">
+                    <div className="rounded-2xl bg-gray-200 h-full p-6 flex flex-col justify-between">
+                        <div>
+                            <div className="italic font-bold text-2xl mb-2">{project.title}</div>
+                            <p className="text-sm mb-4">{project.description}</p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {project.tags.map((tag, i) => (
+                                    <span key={i} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="text-xs text-gray-600 border-t border-gray-300 pt-2">
+                            <strong>Motivo:</strong> {project.motive}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Indicadores (Los puntitos de abajo) */}
+            <div className="flex justify-center gap-2 mt-4">
+                {projects.map((_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setCurrentIndex(i)}
+                        className={`h-2 w-2 rounded-full transition-all ${currentIndex === i ? "bg-white w-6" : "bg-gray-500"}`}
+                    />
+                ))}
+            </div>
+        </div>
     );
 }
