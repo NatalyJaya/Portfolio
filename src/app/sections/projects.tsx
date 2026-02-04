@@ -18,15 +18,15 @@ export default function Project(){
     const project = projects[currentIndex];
 
     return (
-        <div className="mx-[10%] text-white">
+        <div className="max-w-7xl mx-auto px-[5%] text-white py-10">
             <div className="text-4xl font-bold text-center sm:text-left mb-8">
                 Github Projects
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch relative">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
 
                 {/* 2. Contenedor de Imagen con Flechas de Navegación */}
-                <div className="md:col-span-2 relative group min-h-[300px]">
+                <div className="md:col-span-2 relative group aspect-video min-h-[300px] rounded-2xl mask-y-to-90% overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-gray-900">
                     <Image
                         src={project.image}
                         alt={project.title}
@@ -35,6 +35,8 @@ export default function Project(){
                         className="rounded-2xl shadow-lg object-cover w-full h-full transition-all duration-500"
                     />
 
+                    <div
+                        className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"/>
                     {/* Botones de navegación (Estilo carrusel) */}
                     <button
                         onClick={prevProject}
