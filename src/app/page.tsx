@@ -24,7 +24,7 @@ export default function Home() {
               <About/>
           </section>
 
-          {/* Sección About debajo de HomeContent */}
+          {/* Sección Lenguajes debajo de HomeContent */}
           <section className="flex-grow">
               <Languages/>
           </section>

@@ -18,10 +18,9 @@ export default function Project(){
     const project = projects[currentIndex];
 
     return (
-        <div className="max-w-7xl mx-auto px-[5%] text-white py-10">
-            <div className="text-4xl font-bold text-center sm:text-left mb-8">
-                Github Projects
-            </div>
+        
+        <div className="text-4xl font-bold text-center  sm:text-left text-white mb-8 mx-[10%]">
+            <h2 className="text-4xl font-bold mb-6">Github Projects</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
 
