@@ -6,8 +6,7 @@ import universo from "../assets/img/universo.png"; // Use the correct path
 const Navbar = () => {
   return (
     <nav>
-      <div className="flex items-center justify-between mx-auto  ">
-       
+      <div className="fixed top-0 w-full flex items-center justify-around py-5 px-24 ">
         <Link href="/" className="flex items-center">
           <Image src={universo} width={40} height={40} alt="Uni icon" />
         </Link>
@@ -20,11 +19,11 @@ const Navbar = () => {
           <Link href={'#about'} className="text-white text-lg hover:text-gray-400">
             /about
           </Link>
-          <Link href={'/src/app/sections/trajectory.tsx'} className="text-white text-lg hover:text-gray-400">
-            /services
+          <Link href={'/src/app/sections/languages.tsx'} className="text-white text-lg hover:text-gray-400">
+            /languages
           </Link>
           <Link href={'/porjects'} className="text-white text-lg hover:text-gray-400">
-            /services
+            /projects
           </Link>
           <Link href={'/contact'} className="text-white text-lg hover:text-gray-400">
             /contact
