@@ -2,6 +2,7 @@
 import { projects } from "NatalyJaya/app/data/githubData";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Project() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,15 +24,13 @@ export default function Project() {
           className="text-4xl font-bold text-white tracking-tight"
           style={{ fontFamily: "'Syne', sans-serif" }}
         >
-          Github Projects
+          Projects
         </h2>
-        
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
         {/* Imagen con flechas */}
         <div className="md:col-span-2 relative group aspect-video min-h-[300px] rounded-2xl overflow-hidden">
-          {/* Glow de fondo */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-600/10 blur-xl scale-105 -z-10" />
 
           <Image
@@ -42,13 +41,9 @@ export default function Project() {
             className="rounded-2xl object-cover w-full h-full transition-all duration-700"
           />
 
-          {/* Overlay hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
-
-          {/* Borde sutil */}
           <div className="absolute inset-0 rounded-2xl ring-1 ring-white/10 pointer-events-none" />
 
-          {/* Botones de navegación */}
           <button
             onClick={prevProject}
             className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-black/70 hover:border-white/25 transition-all duration-200 text-sm"
@@ -66,7 +61,6 @@ export default function Project() {
         {/* Panel de información */}
         <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 h-full p-6 flex flex-col justify-between text-white">
           <div>
-            {/* Número decorativo */}
             <span className="text-xs font-mono text-white/25 tracking-widest uppercase mb-3 block">
               Project
             </span>
@@ -75,14 +69,37 @@ export default function Project() {
               className="font-bold text-2xl mb-3 text-white leading-tight"
               style={{ fontFamily: "'Syne', sans-serif" }}
             >
-              {project.title}
+              {project.url ? (
+                <Link
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-indigo-300 transition-colors duration-200 inline-flex items-center gap-1.5 group/link"
+                >
+                  {project.title}
+                  <svg
+                    className="w-4 h-4 text-white/30 group-hover/link:text-indigo-300 transition-colors duration-200 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
+                  </svg>
+                </Link>
+              ) : (
+                project.title
+              )}
             </h3>
 
             <p className="text-sm text-white/60 mb-5 leading-relaxed">
               {project.description}
             </p>
 
-            {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-5">
               {project.tags.map((tag, i) => (
                 <span
@@ -95,7 +112,6 @@ export default function Project() {
             </div>
           </div>
 
-          {/* Motivo */}
           <div className="border-t border-white/10 pt-4">
             <p className="text-xs text-white/35 uppercase tracking-widest mb-1 font-mono">
               Motive
