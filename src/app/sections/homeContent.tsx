@@ -1,7 +1,7 @@
 "use client";
 
 import { Typewriter } from 'react-simple-typewriter';
-import hamster from './assets/img/hamster.png';
+import hamster from '../assets/img/hamster.png';
 import Image from "next/image";
 
 // const nameFunc = () => {}
@@ -26,10 +26,10 @@ export default function HomeContent() {
           debugging in real life
         </p>
         <p className="text-2xl text-center sm:text-left text-gray-100 fade-in-up ">
-          I'm a computer science student with a passion for building innovative solutions.
+          I&apos;m a computer science student with a passion for building innovative solutions.
         </p>
         <a
-      href="./assets/CV.pdf"
+      href="../assets/CV.pdf"
       download="CV.pdf"      
       className='mt-6 px-12 py-5 border-2 border-[rgba(255,255,255,0.8)] text-white text-lg font-semibold rounded-md hover:bg-[rgba(255,255,255,0.1)] transition duration-200 ease-in-out fade-in-up'
       >

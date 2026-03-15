@@ -1,9 +1,9 @@
 // footer.js
 import Image from "next/image";
-import devpost from './assets/img/devpost.png';
-import linkedin from './assets/img/linkedin.png';
-import github from './assets/img/github.png';
-import gmail from './assets/img/gmail.png';
+import devpost from '../assets/img/devpost.png';
+import linkedin from '../assets/img/linkedin.png';
+import github from '../assets/img/github.png';
+import gmail from '../assets/img/gmail.png';
 
 export default function Footer() {
   return (

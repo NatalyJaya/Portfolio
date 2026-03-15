@@ -1,25 +1,34 @@
 "use client";
-import Image from "next/image";
-import html from "./assets/img/html.png";
-import java from "./assets/img/java.png";
-import javascript from "./assets/img/javascript.png";
-import python from "./assets/img/python.png";
-import react from "./assets/img/react.png";
-import tailwind_css from "./assets/img/tailwind_css.png";
-import css from "./assets/img/css.png";
-import nextjs from "./assets/img/nextjs.png"
+import Image, {StaticImageData} from "next/image";
+import html from "../assets/img/html.png";
+import java from "../assets/img/java.png";
+import javascript from "../assets/img/javascript.png";
+import python from "../assets/img/python.png";
+import react from "../assets/img/react.png";
+import tailwind_css from "../assets/img/tailwind_css.png";
+import css from "../assets/img/css.png";
+import nextjs from "../assets/img/nextjs.png"
+
+
+// Crear una estructura de objeto x lenguaje
+interface LanguageItem {
+    name: string;
+    src: StaticImageData;
+}
 
 
 export default function Languages() {
-    function sliceArray(arr: any[], n: number): any[][] {
-        const result: any[][] = [];
+
+    //
+    function sliceArray<T>(arr: T[], n: number): T[][] {
+        const result: T[][] = [];
         for (let i = 0; i < arr.length; i += n) {
             result.push(arr.slice(i, i + n));
         }
         return result;
     }
 
-    const all_images = sliceArray([
+    const all_images = sliceArray<LanguageItem>([
         { name: "Java", src: java },
         { name: "Python", src: python },
         { name: "JavaScript", src: javascript },
