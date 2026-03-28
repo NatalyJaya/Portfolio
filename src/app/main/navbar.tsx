@@ -19,6 +19,7 @@ const [activeSection, setActiveSection] = useState("home");
 
 useEffect(() => {
   const handleScroll = () => {
+    setScrolled(window.scrollY > 20);
     const sections = ["home", "about", "languages", "projects", "contact"];
     const reversed = [...sections].reverse();
     for (const id of reversed) {
