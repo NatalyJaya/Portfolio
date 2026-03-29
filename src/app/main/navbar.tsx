@@ -1,7 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from "next/image";
+import universo from "../assets/img/universo.png";
 
 const links = [
   { href: "#home", label: "home" },
@@ -12,158 +14,77 @@ const links = [
 ];
 
 const Navbar = () => {
-  const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-const SECTION_IDS = ["home", "about", "languages", "projects", "contact"] as const;
-
-const [activeSection, setActiveSection] = useState("home");
-
-useEffect(() => {
-  const getScrollOffset = () =>
-    parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-
-  const updateActiveFromScroll = () => {
-    setScrolled(window.scrollY > 20);
-    const offset = getScrollOffset();
-    const maxScroll = Math.max(
-      0,
-      document.documentElement.scrollHeight - window.innerHeight
-    );
-    // Last section: scroll position may never reach section.offsetTop - offset if the
-    // section is short or the user is at the document bottom — still show "contact".
-    if (
-      maxScroll > 0 &&
-      window.scrollY >= maxScroll - 2
-    ) {
-      setActiveSection("contact");
-      return;
-    }
-
-    const reversed = [...SECTION_IDS].reverse();
-    for (const id of reversed) {
-      const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - offset) {
-        setActiveSection(id);
-        break;
-      }
-    }
-  };
-
-  const syncFromHash = () => {
-    const raw = window.location.hash.replace(/^#/, "");
-    if (raw && SECTION_IDS.includes(raw as (typeof SECTION_IDS)[number])) {
-      setActiveSection(raw);
-    }
-  };
-
-  updateActiveFromScroll();
-  syncFromHash();
-
-  window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
-  window.addEventListener("hashchange", syncFromHash);
-  return () => {
-    window.removeEventListener("scroll", updateActiveFromScroll);
-    window.removeEventListener("hashchange", syncFromHash);
-  };
-}, []);
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-        scrolled
-          ? "py-3 bg-black/60 backdrop-blur-xl border-b border-white/10"
-          : "py-5 bg-transparent"
-      }`}
-    >
-      <div className="mx-[10%] flex items-center justify-between">
-        {/* Logo / nombre */}
-        <span
-          className="text-white font-bold text-lg tracking-tight"
-          style={{ fontFamily: "'Syne', sans-serif" }}
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-md">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <Link
+          href="#home"
+          className="flex items-center gap-2"
+          onClick={() => setMenuOpen(false)}
         >
-          NJ<span className="text-indigo-400">.</span>
-        </span>
+          <Image src={universo} width={40} height={40} alt="Home" />
+        </Link>
 
-        {/* Links desktop */}
-        <div className="hidden md:flex items-center gap-1">
-          {links.map(({ href, label }) => {
-            const isActive = activeSection === label;
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`relative px-4 py-2 text-sm font-mono tracking-wide transition-all duration-200 rounded-lg group ${
-                  isActive
-                    ? "text-white"
-                    : "text-white/45 hover:text-white"
-                }`}
-              >
-                <span className="text-indigo-400/70 group-hover:text-indigo-400 transition-colors duration-200">
-                  /
-                </span>
-                {label}
-                {/* Underline activo */}
-                {isActive && (
-                  <span className="absolute bottom-1 left-4 right-4 h-px bg-indigo-400/60 rounded-full" />
-                )}
-              </Link>
-            );
-          })}
+        <div className="hidden items-center gap-1 md:flex">
+          {links.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="px-3 py-2 font-mono text-sm text-white/80 transition-colors hover:text-white"
+            >
+              <span className="text-indigo-400/80">/</span>
+              {label}
+            </Link>
+          ))}
         </div>
 
-        {/* Burger mobile */}
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2 group"
-          aria-label="Toggle menu"
+          type="button"
+          className="flex flex-col gap-1.5 p-2 md:hidden"
+          aria-expanded={menuOpen}
+          aria-label="Open menu"
+          onClick={() => setMenuOpen((o) => !o)}
         >
           <span
-            className={`block h-px w-5 bg-white/70 transition-all duration-300 ${
-              menuOpen ? "rotate-45 translate-y-2" : ""
+            className={`block h-0.5 w-6 bg-white/90 transition-transform ${
+              menuOpen ? "translate-y-2 rotate-45" : ""
             }`}
           />
           <span
-            className={`block h-px w-5 bg-white/70 transition-all duration-300 ${
+            className={`block h-0.5 w-6 bg-white/90 transition-opacity ${
               menuOpen ? "opacity-0" : ""
             }`}
           />
           <span
-            className={`block h-px w-5 bg-white/70 transition-all duration-300 ${
-              menuOpen ? "-rotate-45 -translate-y-2" : ""
+            className={`block h-0.5 w-6 bg-white/90 transition-transform ${
+              menuOpen ? "-translate-y-2 -rotate-45" : ""
             }`}
           />
         </button>
-      </div>
+      </nav>
 
-      {/* Menú mobile */}
       <div
-        className={`md:hidden transition-all duration-300 overflow-hidden ${
-          menuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-        }`}
+        className={`border-t border-white/10 bg-black/90 md:hidden ${
+          menuOpen ? "max-h-[min(70vh,24rem)] opacity-100" : "max-h-0 opacity-0"
+        } overflow-hidden transition-[max-height,opacity] duration-300 ease-out`}
       >
-        <div className="mx-[10%] py-4 flex flex-col gap-1 border-t border-white/10 mt-3">
-          {links.map(({ href, label }) => {
-            const isActive = activeSection === label;
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                className={`px-3 py-2 text-sm font-mono rounded-lg transition-colors duration-200 ${
-                  isActive
-                    ? "text-white bg-white/5"
-                    : "text-white/45 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                <span className="text-indigo-400/70">/</span>
-                {label}
-              </Link>
-            );
-          })}
+        <div className="flex flex-col px-4 py-3 sm:px-6">
+          {links.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="py-3 font-mono text-sm text-white/90 border-b border-white/5 last:border-0"
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="text-indigo-400/80">/</span>
+              {label}
+            </Link>
+          ))}
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
 

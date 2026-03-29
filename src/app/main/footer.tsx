@@ -7,7 +7,7 @@ import gmail from '../assets/img/gmail.png';
 
 export default function Footer() {
   return (
-    <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center ">         
+    <footer className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center justify-center gap-4 px-4 py-8 text-sm text-white/80 sm:gap-6 sm:px-6 lg:px-8">
       <a
         href="https://devpost.com/NatalyJaya"
         target="_blank"

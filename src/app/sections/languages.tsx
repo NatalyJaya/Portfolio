@@ -40,11 +40,11 @@ export default function Languages() {
     ],3);
 
     return (
-        <div className="text-4xl font-bold text-center  sm:text-left text-white mb-8 mx-[10%]">
-            <h2 className="text-4xl font-bold mb-6">Languages</h2>
-            <section className="flex flex-col justify-center gap-4 py-4 items-center ">
+        <div className="mx-auto mb-8 max-w-6xl px-4 text-center text-4xl font-bold text-white sm:text-left sm:px-6 lg:px-8">
+            <h2 className="mb-6 text-4xl font-bold">Languages</h2>
+            <section className="flex flex-col items-center justify-center gap-4 py-4">
                 {all_images.map((image_line,index) => (
-                    <div key={index} className="flex flex-row justify-center gap-16 p-4 items-center ">
+                    <div key={index} className="flex flex-row flex-wrap justify-center gap-6 p-2 sm:gap-10 sm:p-4 md:gap-16">
                         {image_line.map((i, index) => (
                             <div key={index} className=" p-2 rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
                                 <Image 

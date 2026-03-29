@@ -36,7 +36,7 @@ export default function Mail() {
     };
 
     return (
-        <div className="p-8 rounded-lg shadow-lg mx-[10%] ">
+        <div className="mx-auto max-w-6xl rounded-lg p-6 shadow-lg sm:p-8 lg:px-8">
             <div className="text-4xl font-bold text-center sm:text-left text-white mb-8">
                 <h2>Contact Me</h2>
             </div>

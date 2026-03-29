@@ -10,45 +10,39 @@ import Project from "NatalyJaya/app/sections/projects";
 
 export default function Home() {
   return (
-      <div className="min-h-screen flex flex-col pb-20 gap-16 font-[family-name:var(--font-geist-sans)]">
-          {/* Navbar en la parte superior */}
-          <Navbar/>
+    <div
+      className="min-h-dvh flex flex-col bg-neutral-950 pb-20 font-[family-name:var(--font-geist-sans)] text-white"
+    >
+      <Navbar />
 
-          <div className="h-16" />
+      <div className="flex flex-1 flex-col pt-[var(--nav-scroll-offset)]">
+        <section
+          id="home"
+          className="flex min-h-[calc(100dvh-var(--nav-scroll-offset))] flex-col justify-center px-4 py-12 sm:px-6 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8"
+        >
+          <HomeContent />
+        </section>
 
-          {/* Sección principal con HomeContent */}
-          <section id="home" className="flex-grow">
-              <HomeContent />
+        <main className="flex flex-col gap-16 sm:gap-20 lg:gap-24">
+          <section id="about">
+            <About />
           </section>
 
-          {/* Sección About debajo de HomeContent */}
-          <section id="about" className="flex-grow">
-              <About />
+          <section id="languages">
+            <Languages />
           </section>
 
-          {/* Sección Lenguajes debajo de HomeContent */}
-          <section id="languages" className="flex-grow">
-              <Languages />
+          <section id="projects">
+            <Project />
           </section>
 
-          {/* <section className="flex-grow">
-              <Trajectory/>
+          <section id="contact">
+            <Mail />
           </section>
-            */}
+        </main>
 
-          <section id="projects" className="flex-grow">
-          <Project />
-          </section>
-
-          <section id="contact" className="flex-grow">
-              <Mail/>
-          </section>
-          {/* Footer en la parte inferior */}
-          <Footer/>
+        <Footer />
       </div>
+    </div>
   );
 }
-
-
-
-

@@ -3,22 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* Match fixed navbar height so hash links and scroll-spy land below the bar */
-  --nav-scroll-offset: 5.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  /* Fixed header height: single-row nav + padding (tune if navbar layout changes) */
+  --nav-scroll-offset: 5rem;
 }
 
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--nav-scroll-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
