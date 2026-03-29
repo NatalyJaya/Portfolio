@@ -5,7 +5,7 @@ import Footer from "./main/footer";
 import HomeContent from "./sections/homeContent";
 import About from "./about/about";
 import Languages from "./sections/languages";
-import Mail from "NatalyJaya/app/sections/mail";
+
 import Project from "NatalyJaya/app/sections/projects";
 
 export default function Home() {
