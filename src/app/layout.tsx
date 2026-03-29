@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./main/globals.css";
-import {Work_Sans} from 'next/font/google';
-
-const workSans = Work_Sans({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-work-sans',
-});
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,9 +13,32 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Nataly Jaya | CS Student",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Nataly Jaya | CS Student",
+    template: "%s | Nataly Jaya",
+  },
   description: "Computer Science student portfolio",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    title: "Nataly Jaya | CS Student",
+    description: "Computer Science student portfolio",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({

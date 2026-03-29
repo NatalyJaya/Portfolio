@@ -1,21 +1,50 @@
 import nodemailer from "nodemailer";
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit } from "NatalyJaya/lib/rate-limit";
+import { escapeHtml, stripHeaderInjection } from "NatalyJaya/lib/sanitize";
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 const MAX_NAME = 200;
 const MAX_SUBJECT = 200;
 const MAX_MESSAGE = 10000;
+/** Reject huge JSON bodies before parsing (approximate; UTF-8). */
+const MAX_BODY_BYTES = 32_000;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+function clientIp(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0]?.trim() || "unknown";
+  }
+  return request.headers.get("x-real-ip") || "unknown";
 }
 
 export async function POST(request: NextRequest) {
+  const ip = clientIp(request);
+  const limited = rateLimit(`contact:${ip}`);
+  if (!limited.ok) {
+    return NextResponse.json(
+      {
+        error: "Too many requests. Please try again later.",
+        retryAfter: limited.retryAfterSec,
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(limited.retryAfterSec),
+        },
+      }
+    );
+  }
+
+  const len = request.headers.get("content-length");
+  if (len && Number(len) > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Request body too large." }, { status: 413 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -66,9 +95,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const to = process.env.CONTACT_TO_EMAIL || "njayasalazar@gmail.com";
+  const to = process.env.CONTACT_TO_EMAIL?.trim();
   const smtpUser = process.env.SMTP_USER;
   const smtpPass = process.env.SMTP_PASS;
+
+  if (!to) {
+    console.error("Contact API: set CONTACT_TO_EMAIL in environment variables.");
+    return NextResponse.json(
+      { error: "Email delivery is not configured." },
+      { status: 503 }
+    );
+  }
 
   if (!smtpUser || !smtpPass) {
     console.error(
@@ -100,12 +137,14 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  const mailSubject = subjectStr
-    ? `[Portfolio] ${subjectStr}`
-    : `[Portfolio] Message from ${nameStr}`;
+  const safeName = stripHeaderInjection(nameStr);
+  const safeSubject = stripHeaderInjection(subjectStr);
+  const safeMailSubject = safeSubject
+    ? `[Portfolio] ${safeSubject}`.slice(0, 998)
+    : `[Portfolio] Message from ${safeName}`.slice(0, 998);
 
-  const safeName = escapeHtml(nameStr);
-  const safeEmail = escapeHtml(emailStr);
+  const safeNameHtml = escapeHtml(nameStr);
+  const safeEmailHtml = escapeHtml(emailStr);
   const safeBody = escapeHtml(messageStr).replace(/\n/g, "<br/>");
 
   try {
@@ -113,7 +152,7 @@ export async function POST(request: NextRequest) {
       from: `"Portfolio contact" <${smtpUser}>`,
       to,
       replyTo: emailStr,
-      subject: mailSubject,
+      subject: safeMailSubject,
       text: [
         `From: ${nameStr} <${emailStr}>`,
         subjectStr ? `Subject: ${subjectStr}` : "",
@@ -123,7 +162,7 @@ export async function POST(request: NextRequest) {
         .filter(Boolean)
         .join("\n"),
       html: `
-        <p><strong>From:</strong> ${safeName} &lt;${safeEmail}&gt;</p>
+        <p><strong>From:</strong> ${safeNameHtml} &lt;${safeEmailHtml}&gt;</p>
         ${subjectStr ? `<p><strong>Subject:</strong> ${escapeHtml(subjectStr)}</p>` : ""}
         <hr style="border:none;border-top:1px solid #eee;margin:16px 0;" />
         <p style="white-space:pre-wrap;">${safeBody}</p>
@@ -144,4 +183,8 @@ export async function POST(request: NextRequest) {
     ok: true,
     message: "Message sent successfully.",
   });
+}
+
+export async function GET() {
+  return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }
