@@ -24,7 +24,11 @@ useEffect(() => {
     const reversed = [...sections].reverse();
     for (const id of reversed) {
       const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - 100) {
+      const offset =
+        parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop
+        ) || 0;
+      if (el && window.scrollY >= el.offsetTop - offset) {
         setActiveSection(id);
         break;
       }

@@ -22,7 +22,7 @@ export default function Home() {
           </section>
 
           {/* Sección About debajo de HomeContent */}
-          <section id= "about" className="flex-grow">
+          <section id="about" className="flex-grow">
               <About />
           </section>
 
