@@ -36,9 +36,6 @@ export default function Home() {
             <Project />
           </section>
 
-          <section id="contact">
-            <Mail />
-          </section>
         </main>
 
         <Footer />
