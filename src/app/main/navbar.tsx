@@ -15,27 +15,57 @@ const Navbar = () => {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+const SECTION_IDS = ["home", "about", "languages", "projects", "contact"] as const;
+
 const [activeSection, setActiveSection] = useState("home");
 
 useEffect(() => {
-  const handleScroll = () => {
+  const getScrollOffset = () =>
+    parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+
+  const updateActiveFromScroll = () => {
     setScrolled(window.scrollY > 20);
-    const sections = ["home", "about", "languages", "projects", "contact"];
-    const reversed = [...sections].reverse();
+    const offset = getScrollOffset();
+    const maxScroll = Math.max(
+      0,
+      document.documentElement.scrollHeight - window.innerHeight
+    );
+    // Last section: scroll position may never reach section.offsetTop - offset if the
+    // section is short or the user is at the document bottom — still show "contact".
+    if (
+      maxScroll > 0 &&
+      window.scrollY >= maxScroll - 2
+    ) {
+      setActiveSection("contact");
+      return;
+    }
+
+    const reversed = [...SECTION_IDS].reverse();
     for (const id of reversed) {
       const el = document.getElementById(id);
-      const offset =
-        parseFloat(
-          getComputedStyle(document.documentElement).scrollPaddingTop
-        ) || 0;
       if (el && window.scrollY >= el.offsetTop - offset) {
         setActiveSection(id);
         break;
       }
     }
   };
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
+
+  const syncFromHash = () => {
+    const raw = window.location.hash.replace(/^#/, "");
+    if (raw && SECTION_IDS.includes(raw as (typeof SECTION_IDS)[number])) {
+      setActiveSection(raw);
+    }
+  };
+
+  updateActiveFromScroll();
+  syncFromHash();
+
+  window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
+  window.addEventListener("hashchange", syncFromHash);
+  return () => {
+    window.removeEventListener("scroll", updateActiveFromScroll);
+    window.removeEventListener("hashchange", syncFromHash);
+  };
 }, []);
 
   return (
