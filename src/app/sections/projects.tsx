@@ -26,11 +26,32 @@ export default function Project() {
         >
           Projects
         </h2>
+
+        {/* Botones de navegación — solo visibles en móvil/tablet */}
+        <div className="flex items-center gap-2 ml-auto md:hidden">
+          <button
+            onClick={prevProject}
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/20 hover:border-white/25 transition-all duration-200 text-sm"
+            aria-label="Proyecto anterior"
+          >
+            ‹
+          </button>
+          <span className="text-xs font-mono text-white/30 tabular-nums">
+            {currentIndex + 1} / {projects.length}
+          </span>
+          <button
+            onClick={nextProject}
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/20 hover:border-white/25 transition-all duration-200 text-sm"
+            aria-label="Proyecto siguiente"
+          >
+            ›
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
-        {/* Imagen con flechas */}
-        <div className="md:col-span-2 relative group aspect-video min-h-[300px] rounded-2xl overflow-hidden">
+        {/* Imagen con flechas — oculta en móvil/tablet, visible en desktop */}
+        <div className="hidden md:block md:col-span-2 relative group aspect-video min-h-[300px] rounded-2xl overflow-hidden">
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-600/10 blur-xl scale-105 -z-10" />
 
           <Image
@@ -47,19 +68,21 @@ export default function Project() {
           <button
             onClick={prevProject}
             className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-black/70 hover:border-white/25 transition-all duration-200 text-sm"
+            aria-label="Proyecto anterior"
           >
             ‹
           </button>
           <button
             onClick={nextProject}
             className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-black/70 hover:border-white/25 transition-all duration-200 text-sm"
+            aria-label="Proyecto siguiente"
           >
             ›
           </button>
         </div>
 
-        {/* Panel de información */}
-        <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 h-full p-6 flex flex-col justify-between text-white">
+        {/* Panel de información — col-span-1 en desktop, ancho completo en móvil */}
+        <div className="col-span-1 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 h-full p-6 flex flex-col justify-between text-white">
           <div>
             <span className="text-xs font-mono text-white/25 tracking-widest uppercase mb-3 block">
               Project
