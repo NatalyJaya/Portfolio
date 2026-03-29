@@ -1,19 +1,16 @@
 "use client";
 
-import { Typewriter } from 'react-simple-typewriter';
-import hamster from '../assets/img/hamster.png';
+import { Typewriter } from "react-simple-typewriter";
+import hamster from "../assets/img/hamster.png";
 import Image from "next/image";
-
-// const nameFunc = () => {}
 
 export default function HomeContent() {
   return (
-    <main className="flex flex-col gap-8 row-start-2 sm:flex-row sm:items-center justify-between w-full px-6">
-      
-      <div className="flex flex-col items-center sm:items-start ml-[10%] ">
-        <h1 className="text-6xl  font-bold text-center sm:text-left text-white mb-8">
+    <div className="flex w-full max-w-6xl flex-col items-center justify-center gap-10 sm:flex-row sm:items-center sm:justify-between sm:gap-8 lg:gap-12">
+      <div className="flex max-w-xl flex-col items-center text-center sm:items-start sm:text-left">
+        <h1 className="mb-6 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
           <Typewriter
-            words={['Hi there! I am Nat']}
+            words={["Hi there! I am Nat"]}
             loop={1}
             cursor
             cursorStyle="|"
@@ -22,27 +19,34 @@ export default function HomeContent() {
             delaySpeed={1000}
           />
         </h1>
-        <p className="text-4xl font-bold text-center sm:text-left text-gray-300 fade-in-up mb-8">
+        <p className="fade-in-up mb-6 text-2xl font-bold text-gray-300 sm:text-3xl lg:text-4xl">
           debugging in real life
         </p>
-        <p className="text-2xl text-center sm:text-left text-gray-100 fade-in-up ">
-          I&apos;m a computer science student with a passion for building innovative solutions.
+        <p className="fade-in-up text-lg text-gray-100 sm:text-xl lg:text-2xl">
+          I&apos;m a computer science student with a passion for building innovative
+          solutions.
         </p>
         <a
-      href="../assets/CV.pdf"
-      download="CV.pdf"      
-      className='mt-6 px-12 py-5 border-2 border-[rgba(255,255,255,0.8)] text-white text-lg font-semibold rounded-md hover:bg-[rgba(255,255,255,0.1)] transition duration-200 ease-in-out fade-in-up'
-      >
-        Download CV
-      </a>
-      
+          href="../assets/CV.pdf"
+          download="CV.pdf"
+          className="fade-in-up mt-8 inline-flex rounded-md border-2 border-[rgba(255,255,255,0.8)] px-8 py-4 text-base font-semibold text-white transition duration-200 ease-in-out hover:bg-[rgba(255,255,255,0.1)] sm:px-12 sm:py-5 sm:text-lg"
+        >
+          Download CV
+        </a>
       </div>
-      
 
-      {/* Imagen Oshawott alineada a la derecha */}
-      <div className=" flex-col-reverse self-center sm:self-middle ml-auto sm:ml-0 overflow-hidden w-[300px] h-[300px] mr-64 fade-in-up">
-        <Image src={hamster} width={300} height={300} alt="hamster" className="object-cover" />
+      <div className="fade-in-up flex shrink-0 justify-center sm:justify-end">
+        <div className="relative h-[min(260px,70vw)] w-[min(260px,70vw)] sm:h-64 sm:w-64 md:h-[280px] md:w-[280px] lg:h-[300px] lg:w-[300px]">
+          <Image
+            src={hamster}
+            fill
+            sizes="(max-width: 640px) 70vw, 300px"
+            alt="Illustration next to the intro"
+            className="object-cover"
+            priority
+          />
+        </div>
       </div>
-    </main>
+    </div>
   );
 }
