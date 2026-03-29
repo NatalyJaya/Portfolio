@@ -12,7 +12,7 @@ export default function About() {
         <hr className="border-t-2 border-[#f5f5dc] w-full" />
         <p className="text-xl mb-8">
 
-          <br /> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pellentesque 
+          <br /> Lorem ipsum LOL dolor sit amet, consectetur adipiscing elit. Sed pellentesque 
           sapien at ligula tristique faucibus. Quisque non metus eu nunc mollis sollicitudin 
           quis at neque. Pellentesque augue dolor, dictum a tortor at, ultricies tincidunt mauris.
            Quisque mattis egestas nisi, in iaculis tortor laoreet vitae. Aenean viverra auctor 
