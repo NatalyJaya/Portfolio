@@ -1,5 +1,5 @@
 import xarxes from "../assets/img/xarxes_proj.png"
-import pipTransaltor from "../assets/img/p1.jpeg"
+import pipTransaltor from "../assets/img/p1.png"
 import cartesDelMites from "../assets/img/Je8VV+.png"
 
 export const projects = [

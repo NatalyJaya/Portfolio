@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import imgAbout from "../assets/img/ImgAbout.jpg";
+import imgAbout from "../assets/img/ImgAbout.png";
 
 export default function About() {
   return (

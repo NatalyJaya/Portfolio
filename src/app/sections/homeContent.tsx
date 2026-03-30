@@ -1,7 +1,7 @@
 "use client";
 
 import { Typewriter } from "react-simple-typewriter";
-import ProfilePic from "../assets/img/colores.jpg";
+import ProfilePic from "../assets/img/colores.png";
 import Image from "next/image";
 
 export default function HomeContent() {
