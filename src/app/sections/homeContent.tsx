@@ -1,7 +1,7 @@
 "use client";
 
 import { Typewriter } from "react-simple-typewriter";
-import hamster from "../assets/img/hamster.png";
+import ProfilePic from "../assets/img/colores.jpg";
 import Image from "next/image";
 
 export default function HomeContent() {
@@ -27,8 +27,8 @@ export default function HomeContent() {
           solutions.
         </p>
         <a
-          href="../assets/CV.pdf"
-          download="CV.pdf"
+          href="/cv/Nataly_Jaya_CV_En.pdf"
+          download="Nataly_Jaya_CV.pdf"
           className="fade-in-up mt-8 inline-flex rounded-md border-2 border-[rgba(255,255,255,0.8)] px-8 py-4 text-base font-semibold text-white transition duration-200 ease-in-out hover:bg-[rgba(255,255,255,0.1)] sm:px-12 sm:py-5 sm:text-lg"
         >
           Download CV
@@ -38,7 +38,7 @@ export default function HomeContent() {
       <div className="fade-in-up flex shrink-0 justify-center sm:justify-end">
         <div className="relative h-[min(260px,70vw)] w-[min(260px,70vw)] sm:h-64 sm:w-64 md:h-[280px] md:w-[280px] lg:h-[300px] lg:w-[300px]">
           <Image
-            src={hamster}
+            src={ProfilePic}
             fill
             sizes="(max-width: 640px) 70vw, 300px"
             alt="Illustration next to the intro"

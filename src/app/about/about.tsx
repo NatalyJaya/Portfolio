@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import imgAbout from "../assets/img/imgAbout.jpg";
+import imgAbout from "../assets/img/ImgAbout.jpg";
 
 export default function About() {
   return (
@@ -12,13 +12,9 @@ export default function About() {
         <hr className="border-t-2 border-[#f5f5dc] w-full" />
         <p className="text-xl mb-8">
 
-          <br /> Lorem ipsum LOL dolor sit amet, consectetur adipiscing elit. Sed pellentesque 
-          sapien at ligula tristique faucibus. Quisque non metus eu nunc mollis sollicitudin 
-          quis at neque. Pellentesque augue dolor, dictum a tortor at, ultricies tincidunt mauris.
-           Quisque mattis egestas nisi, in iaculis tortor laoreet vitae. Aenean viverra auctor 
-           luctus. Aenean fermentum eu sem et vestibulum. Etiam dui leo, rhoncus id magna at, 
-           pharetra pharetra turpis. Nam pulvinar ligula at rutrum cursus. Suspendisse ac augue 
-           tellus. Curabitur efficitur massa ipsum, quis lacinia quam elementum eu.
+          <br /> I am a third-year Computer Engineering student at the University of Lleida, passionate about software development and cybersecurity. I enjoy diving deep into how things truly work, pushing myself to understand complex systems and turning that curiosity into practical, meaningful solutions.
+
+A tech enthusiast committed to continuous learning, I like taking on challenges that push me beyond my comfort zone. My goal is to help build a digital world that is more efficient, innovative, and secure.
         </p>
       </div>
       <div className="flex justify-center sm:w-[50%] p-4">
