@@ -11,10 +11,16 @@ permissions:
   id-token: write
 
 jobs:
-  deploy: # This is the job ID
+  deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    steps: # 'steps' must be indented under the job ID
+    
+    # env for github :)
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -35,4 +41,5 @@ jobs:
           path: ./out
 
       - name: Deploy
+        id: deployment # id per la url
         uses: actions/deploy-pages@v5
