@@ -2,6 +2,7 @@
 
 A personal portfolio website built with **Next.js**, **TypeScript**, and **Tailwind CSS**. It showcases projects, skills, trajectory, and contact information, and is automatically deployed to GitHub Pages via CI/CD pipelines.
 
+
 ---
 
 ## 📋 Table of Contents
