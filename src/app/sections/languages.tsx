@@ -46,7 +46,7 @@ export default function Languages() {
                 {all_images.map((image_line,index) => (
                     <div key={index} className="flex flex-row flex-wrap justify-center gap-6 p-2 sm:gap-10 sm:p-4 md:gap-16">
                         {image_line.map((i, index) => (
-                            <div key={index} className=" p-2 rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
+                            <div key={index} className="p-2 rounded-lg shadow-lg transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-indigo-500/20 hover:bg-white/5 cursor-pointer">
                                 <Image 
                                     src={i.src} 
                                     alt={i.name} 

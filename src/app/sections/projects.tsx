@@ -31,7 +31,7 @@ export default function Project() {
         <div className="flex items-center gap-2 ml-auto md:hidden">
           <button
             onClick={prevProject}
-            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/20 hover:border-white/25 transition-all duration-200 text-sm"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/20 hover:border-white/25 hover:scale-110 active:scale-95 transition-all duration-200 text-sm"
             aria-label="Proyecto anterior"
           >
             ‹
@@ -41,7 +41,7 @@ export default function Project() {
           </span>
           <button
             onClick={nextProject}
-            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/20 hover:border-white/25 transition-all duration-200 text-sm"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white/70 hover:text-white hover:bg-white/20 hover:border-white/25 hover:scale-110 active:scale-95 transition-all duration-200 text-sm"
             aria-label="Proyecto siguiente"
           >
             ›
@@ -152,7 +152,7 @@ export default function Project() {
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
+            className={`h-1.5 rounded-full transition-all duration-300 hover:scale-125 ${
               currentIndex === i
                 ? "bg-indigo-400 w-7"
                 : "bg-white/20 w-1.5 hover:bg-white/40"
