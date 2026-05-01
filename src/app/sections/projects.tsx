@@ -1,5 +1,5 @@
 "use client";
-import { projects } from "NatalyJaya/app/data/githubData";
+import { projects } from "../data/githubData";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";

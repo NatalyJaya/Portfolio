@@ -6,7 +6,7 @@ import HomeContent from "./sections/homeContent";
 import About from "./about/about";
 import Languages from "./sections/languages";
 
-import Project from "NatalyJaya/app/sections/projects";
+import Project from "./sections/projects";
 
 export default function Home() {
   return (
