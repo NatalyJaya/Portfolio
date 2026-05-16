@@ -34,8 +34,6 @@ export default function Footer() {
       </a>         
       <a
         href="mailto:natvlyjs@gmail.com"
-        target="_blank"
-        rel="noopener noreferrer"
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
       >
         <Image src={gmail} width={20} height={20} alt="Mail icon" /> Gmail

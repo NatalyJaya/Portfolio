@@ -27,7 +27,7 @@ export default function HomeContent() {
           solutions.
         </p>
         <a
-          href="/cv/Nataly_Jaya_CV_En.pdf"
+          href="/Nataly_Jaya_CV_En.pdf"
           download="Nataly_Jaya_CV.pdf"
           className="fade-in-up mt-8 inline-flex rounded-md border-2 border-[rgba(255,255,255,0.8)] px-8 py-4 text-base font-semibold text-white transition duration-200 ease-in-out hover:bg-[rgba(255,255,255,0.1)] sm:px-12 sm:py-5 sm:text-lg"
         >

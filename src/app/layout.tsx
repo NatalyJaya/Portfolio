@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     title: "Nataly Jaya | CS Student",
     description: "Computer Science student portfolio",
   },
+  keywords: ["portfolio", "developer", "computer science", "Nataly Jaya"],
+  authors: [{ name: "Nataly Jaya" }],
+  icons: { icon: "/favicon.ico" },
 };
 
 export const viewport: Viewport = {

@@ -42,7 +42,7 @@ const Navbar = () => {
             className="flex items-center gap-2 transition-transform hover:scale-105"
             onClick={() => setMenuOpen(false)}
           >
-            <Image src={universo} width={40} height={40} alt="Home" priority />
+            <Image src={universo} width={40} height={40} alt="Nataly Jaya home" priority />
           </Link>
 
           <div className="hidden items-center gap-1 md:flex">

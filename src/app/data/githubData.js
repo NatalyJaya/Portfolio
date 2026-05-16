@@ -4,7 +4,6 @@ import cartesDelMites from "../assets/img/Je8VV+.png"
 
 export const projects = [
     {
-        index: 1,
         image: xarxes,
         title: "Video transmission with RTSP and RTP",
         description: "Real-time video streaming system composed of \n" +
@@ -15,7 +14,6 @@ export const projects = [
 
     },
     {
-        index: 2,
         image: pipTransaltor,
         title: "translator-UAB",
         url: "https://devpost.com/software/translator-uabthehack", 
@@ -26,7 +24,6 @@ export const projects = [
 
     },
     {
-        index: 3,
         image: cartesDelMites,
         title: "Cartes del Mite",
         url: "https://nsaadig16.itch.io/cartes-del-mite",
