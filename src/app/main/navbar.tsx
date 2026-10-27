@@ -8,8 +8,10 @@ import universo from "../assets/img/universo.png";
 const links = [
   { href: "#home", label: "home" },
   { href: "#about", label: "about" },
+  { href: "#timeline", label: "timeline" },
+  { href: "#education", label: "education" },
+  { href: "#research", label: "research" },
   { href: "#languages", label: "languages" },
-  { href: "#projects", label: "projects" },
 ];
 
 const Navbar = () => {
@@ -30,9 +32,9 @@ const Navbar = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-500 ${
           scrolled
-            ? "bg-black/90 backdrop-blur-md border-white/10"
+            ? "bg-black/80 backdrop-blur-xl border-white/10"
             : "bg-transparent border-transparent"
         }`}
       >
@@ -52,9 +54,9 @@ const Navbar = () => {
                 href={href}
                 className="group relative px-3 py-2 font-mono text-sm text-white/80 transition-colors hover:text-white"
               >
-                <span className="text-indigo-400/80 group-hover:text-indigo-400 transition-colors">/</span>
+                <span className="text-cyan-400/80 group-hover:text-cyan-400 transition-colors">/</span>
                 {label}
-                <span className="absolute bottom-1 left-3 h-0.5 w-0 bg-indigo-400/50 transition-all duration-300 group-hover:w-4" />
+                <span className="absolute bottom-1 left-3 h-0.5 w-0 bg-cyan-400/50 transition-all duration-300 group-hover:w-4" />
               </Link>
             ))}
           </div>
@@ -94,10 +96,10 @@ const Navbar = () => {
               <Link
                 key={href}
                 href={href}
-                className="py-3 font-mono text-sm text-white/90 border-b border-white/5 last:border-0 hover:text-indigo-400 transition-colors"
+                className="py-3 font-mono text-sm text-white/90 border-b border-white/5 last:border-0 hover:text-cyan-400 transition-colors"
                 onClick={() => setMenuOpen(false)}
               >
-                <span className="text-indigo-400/80">/</span>
+                <span className="text-cyan-400/80">/</span>
                 {label}
               </Link>
             ))}

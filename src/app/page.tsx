@@ -4,15 +4,14 @@ import Navbar from "./main/navbar";
 import Footer from "./main/footer";
 import HomeContent from "./sections/homeContent";
 import About from "./about/about";
+import Timeline from "./sections/timeline";
+import Education from "./sections/education";
 import Languages from "./sections/languages";
-
-import Project from "./sections/projects";
+import Research from "./sections/research";
 
 export default function Home() {
   return (
-    <div
-      className="min-h-dvh flex flex-col bg-neutral-950 pb-20 font-[family-name:var(--font-geist-sans)] text-white"
-    >
+    <div className="min-h-dvh flex flex-col bg-neutral-950 pb-20 text-white">
       <Navbar />
 
       <div className="flex flex-1 flex-col pt-[var(--nav-scroll-offset)]">
@@ -23,19 +22,26 @@ export default function Home() {
           <HomeContent />
         </section>
 
-        <main className="flex flex-col gap-16 sm:gap-20 lg:gap-24">
+        <main className="flex flex-col gap-0">
           <section id="about">
             <About />
+          </section>
+
+          <section id="timeline">
+            <Timeline />
+          </section>
+
+          <section id="education">
+            <Education />
+          </section>
+
+          <section id="research">
+            <Research />
           </section>
 
           <section id="languages">
             <Languages />
           </section>
-
-          <section id="projects">
-            <Project />
-          </section>
-
         </main>
 
         <Footer />

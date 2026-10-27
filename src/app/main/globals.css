@@ -5,8 +5,10 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
-  /* Fixed header height: single-row nav + padding (tune if navbar layout changes) */
   --nav-scroll-offset: 5rem;
+  --accent-cyan: #06B6D4;
+  --accent-purple: #8B5CF6;
+  --accent-emerald: #10B981;
 }
 
 html {
@@ -23,7 +25,7 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-syne), system-ui, sans-serif;
 }
 
 @layer utilities {
@@ -42,21 +44,41 @@ body {
 }
 
 .fade-in {
-  animation: fadeIn 1.5s ease-in-out;
+  animation: fadeIn 0.6s ease-out;
 }
-
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px); /* Empieza 20px más abajo */
+    transform: translateY(15px);
   }
   to {
     opacity: 1;
-    transform: translateY(0); /* Llega a su posición original */
+    transform: translateY(0);
   }
 }
 
 .fade-in-up {
-  animation: fadeInUp 1.5s ease-in-out;
+  animation: fadeInUp 0.6s ease-out;
 }
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }

@@ -17,12 +17,12 @@ export default function Project() {
   const project = projects[currentIndex];
 
   return (
-    <div className="mx-auto mb-8 max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div className="mx-auto mb-8 max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <h2
           className="text-4xl font-bold text-white tracking-tight"
-          style={{ fontFamily: "'Syne', sans-serif" }}
+          style={{ fontFamily: "var(--font-syne)" }}
         >
           Projects
         </h2>
@@ -52,14 +52,14 @@ export default function Project() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
         {/* Imagen con flechas — oculta en móvil/tablet, visible en desktop */}
         <div className="hidden md:block md:col-span-2 relative group aspect-video min-h-[300px] rounded-2xl overflow-hidden">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-600/10 blur-xl scale-105 -z-10" />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/10 via-indigo-500/10 to-purple-600/10 blur-xl scale-105 -z-10 group-hover:from-cyan-500/20 group-hover:via-indigo-500/20 transition-all duration-500" />
 
           <Image
             src={project.image}
             alt={project.title}
             width={800}
             height={500}
-            className="rounded-2xl object-cover w-full h-full transition-all duration-700"
+            className="rounded-2xl object-cover w-full h-full transition-all duration-500 group-hover:scale-105"
           />
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
@@ -97,7 +97,7 @@ export default function Project() {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-indigo-300 transition-colors duration-200 inline-flex items-center gap-1.5 group/link"
+                  className="hover:text-cyan-300 transition-colors duration-200 inline-flex items-center gap-1.5 group/link"
                 >
                   {project.title}
                   <svg
@@ -127,7 +127,7 @@ export default function Project() {
               {project.tags.map((tag, i) => (
                 <span
                   key={i}
-                  className="text-xs px-2.5 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-400/20 font-medium tracking-wide"
+                  className="text-xs px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/20 font-medium tracking-wide"
                 >
                   {tag}
                 </span>
@@ -154,7 +154,7 @@ export default function Project() {
             onClick={() => setCurrentIndex(i)}
             className={`h-1.5 rounded-full transition-all duration-300 hover:scale-125 ${
               currentIndex === i
-                ? "bg-indigo-400 w-7"
+                ? "bg-cyan-400 w-7"
                 : "bg-white/20 w-1.5 hover:bg-white/40"
             }`}
           />
