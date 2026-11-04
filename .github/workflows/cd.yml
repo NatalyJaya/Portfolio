@@ -1,3 +1,5 @@
+name: CD - Deploy to GitHub Pages
+
 on:
   workflow_dispatch:
   workflow_run:
@@ -10,30 +12,43 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    
-    # env for github :)
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          static_site_generator: next
+          node-version: "20"
+          cache: npm
+
+      # The base path ("/Portfolio" for a project site, "" for a custom domain)
+      # is read from Pages and passed to next.config.mjs — no config injection.
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build project
-        run: npx next build
+      - name: Build static site
+        run: npm run build
+        env:
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -41,5 +56,5 @@ jobs:
           path: ./out
 
       - name: Deploy
-        id: deployment # id per la url
+        id: deployment
         uses: actions/deploy-pages@v5

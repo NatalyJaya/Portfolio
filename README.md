@@ -11,7 +11,6 @@ A personal portfolio website built with **Next.js**, **TypeScript**, and **Tailw
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
 - [Available Scripts](#available-scripts)
 - [CI/CD Pipeline with GitHub Actions](#cicd-pipeline-with-github-actions)
 - [Deployment](#deployment)
@@ -20,29 +19,25 @@ A personal portfolio website built with **Next.js**, **TypeScript**, and **Tailw
 
 ## Overview
 
-This is a fully responsive personal portfolio featuring:
+A single-page portfolio with an editorial, "neural field" identity:
 
-- **Home** — introduction and typewriter effect
-- **About** — bio and profile image
-- **Projects** — showcased work with GitHub data integration
-- **Languages & Skills** — technology stack display
-- **Contact** — footer with social links and email
+- **Opening sequence**: a live Canvas 2D network forms (nodes → synapses → signal) and becomes the hero background. It plays once per session; `?intro` forces a replay. It respects `prefers-reduced-motion` and pauses off-screen.
+- **About**, **Selected work** (three case studies with schematics drawn from each codebase), **Open notebooks** (learning resources), **Skills** (a draggable "connectome" where each skill links to its evidence, plus an index view), **Research interests & writing**, **Journey** (gallery + lightbox) and **Contact**.
 
-Internationalization is supported via `i18next` and `react-i18next`.
+No runtime dependencies beyond Next.js and React.
 
 ---
 
 ## Tech Stack
 
-| Layer       | Technology                                      |
-|-------------|-------------------------------------------------|
-| Framework   | [Next.js](https://nextjs.org/) (v16)            |
-| Language    | TypeScript                                      |
-| Styling     | Tailwind CSS, Styled Components                 |
-| UI Icons    | Lucide React, React Icons                       |
-| i18n        | i18next, react-i18next                          |
-| Font        | Geist (via `next/font`)                         |
-| Linting     | ESLint (eslint-config-next)                     |
+| Layer      | Technology                                         |
+|------------|----------------------------------------------------|
+| Framework  | [Next.js](https://nextjs.org/) 16 (static export)  |
+| Language   | TypeScript                                         |
+| Styling    | Tailwind CSS 3 + CSS custom-property tokens        |
+| Graphics   | Canvas 2D and inline SVG (no WebGL library)        |
+| Fonts      | Newsreader (Google Fonts), Geist Sans/Mono (local) |
+| Linting    | ESLint 9 flat config (`eslint-config-next`)        |
 
 ---
 
@@ -50,73 +45,53 @@ Internationalization is supported via `i18next` and `react-i18next`.
 
 ```
 src/
-├── app/
-│   ├── about/          # About section component
-│   ├── assets/img/     # Static images and icons
-│   ├── data/           # GitHub data integration
-│   ├── fonts/          # Geist font files
-│   ├── main/           # Navbar, footer, post-footer
-│   ├── sections/       # Home, Projects, Languages, Trajectory
-│   ├── layout.tsx      # Root layout
-│   └── page.tsx        # Entry page
+├── app/                 # layout (fonts, metadata, pre-paint intro script), page, globals.css, icon
+├── assets/photos/       # optimised JPEGs used by the gallery/about
 ├── components/
-│   └── ui/             # Reusable UI components (badge, etc.)
-└── lib/
-    ├── rate-limit.ts   # API rate limiting utility
-    ├── sanitize.ts     # Input sanitization
-    └── utils.ts        # General utilities
+│   ├── neural/          # field.ts (simulation engine) + NeuralField.tsx (intro overlay)
+│   ├── figures/         # project schematics (SVG / code)
+│   ├── sections/        # one component per page section
+│   ├── layout/          # navbar
+│   └── ui/              # icons, section header, reveal observer
+├── content/             # ← edit these to update the site
+│   ├── profile.ts       # identity, links, education, certificates
+│   ├── projects.ts      # case studies
+│   ├── resources.ts     # open notebooks
+│   ├── skills.ts        # skills + evidence
+│   ├── writing.ts       # interests + articles (placeholders until published)
+│   └── journey.ts       # gallery entries
+└── lib/utils.ts
 ```
+
+### Updating content
+
+- **Publish an article**: replace a placeholder in `src/content/writing.ts` with a `status: "published"` entry (the file has a template).
+- **Add a gallery photo**: drop a JPEG (≤1400px wide) into `src/assets/photos/`, import it in `src/content/journey.ts` and set `image` on the entry.
+- **Add project screenshots**: set `media` on a project in `src/content/projects.ts`.
+- **Add a skill**: append to `src/content/skills.ts` with the places it was used (`evidence`). Size in the sphere is derived from that count.
 
 ---
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js **v20** or later
-- npm or yarn
-
-### Installation
+Requires Node.js 20+.
 
 ```bash
-# Clone the repository
-git clone https://github.com/<your-username>/Portfolio.git
-cd Portfolio
-
-# Install dependencies
 npm install
+npm run dev        # http://localhost:3000
 ```
-
-### Run in development mode
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
----
-
-## Environment Variables
-
-Copy `.env.example` to `.env.local` and fill in your values:
-
-```bash
-cp .env.example .env.local
-```
-
-The project uses environment variables for things like email configuration (Nodemailer). Refer to `.env.example` for the required keys.
-
----
 
 ## Available Scripts
 
-| Command         | Description                        |
-|-----------------|------------------------------------|
-| `npm run dev`   | Start the development server       |
-| `npm run build` | Build for production               |
-| `npm run start` | Start the production server        |
-| `npm run lint`  | Run ESLint                         |
+| Command             | Description                                   |
+|---------------------|-----------------------------------------------|
+| `npm run dev`       | Development server                            |
+| `npm run build`     | Static export to `./out`                      |
+| `npm run start`     | Serve `./out` locally                         |
+| `npm run lint`      | ESLint                                        |
+| `npm run typecheck` | TypeScript, no emit                           |
+
+`PAGES_BASE_PATH` (set automatically in CD) builds the site for a GitHub Pages project path such as `/Portfolio`.
 
 ---
 
@@ -139,7 +114,7 @@ This project implements two separate GitHub Actions workflows located in `.githu
 2. **Detect the package manager** (yarn or npm) by checking for a `yarn.lock` file.
 3. **Set up Node.js v20** with dependency caching.
 4. **Install dependencies** using the detected package manager.
-5. **Build the Next.js project** (`next build`) to validate that the code compiles without errors.
+5. **Lint, type-check and build** the Next.js project to validate the code.
 
 ```yaml
 # Simplified overview of ci.yml
@@ -174,7 +149,7 @@ This ensures that no broken code is ever merged into the main branch.
 
 1. **Waits for CI to pass** — the deployment only starts if the CI workflow conclusion is `success`.
 2. **Checkout** the repository.
-3. **Configure GitHub Pages** with Next.js as the static site generator.
+3. **Configure GitHub Pages** and read its base path, passed to the build as `PAGES_BASE_PATH`.
 4. **Install dependencies** and **build** the project (`next build`), producing a static export in `./out`.
 5. **Upload the build artifact** for GitHub Pages.
 6. **Deploy** to GitHub Pages and output the live URL.
@@ -196,9 +171,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
+      - uses: actions/configure-pages@v5   # provides base_path
       - name: Install & Build
       - uses: actions/upload-pages-artifact@v3
         with:

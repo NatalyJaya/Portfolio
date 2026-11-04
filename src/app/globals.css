@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================================
+   Tokens — "Neural field"
+   A near-black ground, warm-neutral ink, and three signal hues used as
+   accents (never as backgrounds). Amber is the rare "spike".
+   ========================================================================= */
+:root {
+  --bg: #07080b;
+  --bg-elev: #0d0f14;
+  --bg-elev-2: #13161d;
+
+  --fg: #eceef2;
+  --fg-muted: #a3a8b4; /* ~8:1 on --bg */
+  --fg-faint: #7d8393; /* ~5:1 on --bg — labels only */
+
+  --line: rgba(236, 238, 242, 0.08);
+  --line-strong: rgba(236, 238, 242, 0.16);
+
+  --violet: #a99bff;
+  --blue: #7aa7ff;
+  --cyan: #6fdde6;
+  --amber: #f0b86e;
+
+  --nav-h: 4rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-h) + 1rem);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11";
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--violet) 40%, transparent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@layer components {
+  .page {
+    @apply mx-auto w-full max-w-page;
+    padding-inline: var(--gutter);
+  }
+
+  /* Small technical labels: one tracking value everywhere. */
+  .label {
+    @apply font-mono text-[0.6875rem] uppercase text-faint;
+    letter-spacing: 0.16em;
+  }
+
+  .rule {
+    @apply border-t border-line;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s var(--ease-out), color 0.3s;
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 font-mono text-[0.6875rem] text-muted;
+    letter-spacing: 0.04em;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* =========================================================================
+   Scroll reveal — elements start visible; JS opts them into the effect,
+   so no-JS and reduced-motion visitors always see content.
+   ========================================================================= */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--reveal-delay, 0) * 90ms);
+}
+.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* =========================================================================
+   Opening sequence
+   `data-intro="play"` is set by an inline script in <head> before first
+   paint, only when the intro will actually run (JS on, motion allowed,
+   first visit this session). The hero copy waits for it, then staggers in.
+   ========================================================================= */
+.hero-reveal {
+  transition:
+    opacity 1.1s var(--ease-out),
+    transform 1.1s var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 110ms);
+}
+html[data-intro="play"] .hero-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+}
+html[data-intro="play"] .site-nav {
+  opacity: 0;
+}
+.site-nav {
+  transition: opacity 0.8s var(--ease-out), background-color 0.4s, border-color 0.4s;
+}
+
+.intro-overlay {
+  display: none;
+}
+html[data-intro="play"] .intro-overlay,
+html[data-intro="reveal"] .intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--gutter);
+  padding-bottom: clamp(2rem, 9vh, 5rem);
+  pointer-events: none;
+  transition: opacity 0.8s var(--ease-out);
+}
+html[data-intro="reveal"] .intro-overlay {
+  opacity: 0;
+}
+html[data-intro="play"] body {
+  overflow: hidden;
+}
+.intro-panel {
+  width: min(26rem, 100%);
+  animation: intro-in 0.9s var(--ease-out) 0.15s both;
+}
+.intro-bar {
+  transition: transform 0.25s linear;
+}
+.intro-skip {
+  position: absolute;
+  top: 1.25rem;
+  right: var(--gutter);
+  pointer-events: auto;
+  padding: 0.5rem 0.25rem;
+  color: var(--fg-muted);
+  transition: color 0.3s;
+}
+.intro-skip:hover {
+  color: var(--fg);
+}
+
+@keyframes intro-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+dialog::backdrop {
+  background: rgba(4, 5, 7, 0.94);
+}
+
+/* Signal travelling along a schematic path (project figures). */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+.signal-path {
+  stroke-dasharray: 18 182;
+  animation: dash-flow 3.6s linear infinite;
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.pulse-dot {
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .js-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =========================================================================
+   Figures (project schematics) — hairline, monospace, accent only on signal
+   ========================================================================= */
+.fig text {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  fill: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+.fig .fig-title {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 14px;
+  fill: var(--fg);
+  letter-spacing: -0.01em;
+}
+.fig .fig-faint {
+  fill: var(--fg-faint);
+  font-size: 10px;
+}
+.fig .fig-box {
+  fill: var(--bg-elev);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.fig .fig-box-inner {
+  fill: var(--bg-elev-2);
+  stroke: var(--line);
+}
+.fig .fig-wire {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.fig .fig-signal {
+  fill: none;
+  stroke: var(--cyan);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.fig .fig-signal.violet {
+  stroke: var(--violet);
+}
+.fig .fig-node {
+  fill: var(--fg-muted);
+}
+.fig .fig-mine {
+  fill: var(--violet);
+}
+.fig .fig-mine-text {
+  fill: var(--violet);
+}

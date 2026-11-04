@@ -1,51 +1,29 @@
-"use client";
-
-import Navbar from "./main/navbar";
-import Footer from "./main/footer";
-import HomeContent from "./sections/homeContent";
-import About from "./about/about";
-import Timeline from "./sections/timeline";
-import Education from "./sections/education";
-import Languages from "./sections/languages";
-import Research from "./sections/research";
+import Navbar from "@/components/layout/Navbar";
+import RevealObserver from "@/components/ui/RevealObserver";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Projects from "@/components/sections/Projects";
+import Notebooks from "@/components/sections/Notebooks";
+import Skills from "@/components/sections/skills/Skills";
+import Writing from "@/components/sections/Writing";
+import Journey from "@/components/sections/Journey";
+import Contact from "@/components/sections/Contact";
 
 export default function Home() {
   return (
-    <div className="min-h-dvh flex flex-col bg-neutral-950 pb-20 text-white">
+    <>
       <Navbar />
-
-      <div className="flex flex-1 flex-col pt-[var(--nav-scroll-offset)]">
-        <section
-          id="home"
-          className="flex min-h-[calc(100dvh-var(--nav-scroll-offset))] flex-col justify-center px-4 py-12 sm:px-6 lg:mx-auto lg:w-full lg:max-w-6xl lg:px-8"
-        >
-          <HomeContent />
-        </section>
-
-        <main className="flex flex-col gap-0">
-          <section id="about">
-            <About />
-          </section>
-
-          <section id="timeline">
-            <Timeline />
-          </section>
-
-          <section id="education">
-            <Education />
-          </section>
-
-          <section id="research">
-            <Research />
-          </section>
-
-          <section id="languages">
-            <Languages />
-          </section>
-        </main>
-
-        <Footer />
-      </div>
-    </div>
+      <Hero />
+      <main id="main">
+        <About />
+        <Projects />
+        <Notebooks />
+        <Skills />
+        <Writing />
+        <Journey />
+      </main>
+      <Contact />
+      <RevealObserver />
+    </>
   );
 }

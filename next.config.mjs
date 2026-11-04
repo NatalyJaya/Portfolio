@@ -1,36 +1,22 @@
+/**
+ * Static export for GitHub Pages.
+ *
+ * PAGES_BASE_PATH is provided by the CD workflow (actions/configure-pages
+ * output), e.g. "/Portfolio" for a project site, or "" for a custom domain.
+ * Locally it is unset, so the site is served from "/".
+ *
+ * Security headers are not configured here: GitHub Pages serves static files
+ * and ignores Next.js `headers()`. Configure them at the CDN if you move hosts.
+ */
+const basePath = process.env.PAGES_BASE_PATH || "";
+
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
-
-const securityHeaders = [
-  { key: "X-DNS-Prefetch-Control", value: "on" },
-  { key: "X-Frame-Options", value: "SAMEORIGIN" },
-  { key: "X-Content-Type-Options", value: "nosniff" },
-  {
-    key: "Referrer-Policy",
-    value: "strict-origin-when-cross-origin",
-  },
-  {
-    key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=()",
-  },
-];
-
-if (isProd) {
-  securityHeaders.push({
-    key: "Strict-Transport-Security",
-    value: "max-age=31536000; includeSubDomains; preload",
-  });
-}
-
 const nextConfig = {
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: securityHeaders,
-      },
-    ];
-  },
+  output: "export",
+  basePath,
+  images: { unoptimized: true },
+  env: { NEXT_PUBLIC_BASE_PATH: basePath },
+  poweredByHeader: false,
 };
 
 export default nextConfig;
