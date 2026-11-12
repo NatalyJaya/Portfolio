@@ -64,15 +64,18 @@ export const viewport: Viewport = {
 /**
  * Runs before first paint. Decides whether the opening sequence plays
  * (JS on, motion allowed, first visit this session — or `?intro` to force),
- * and opts the page into scroll reveals. A safety timer guarantees the hero
- * is never left hidden if something fails later.
+ * and opts the page into scroll reveals. The sequence is the shell loader
+ * (`data-shell`) followed by the neural intro (`data-intro`). Safety timers
+ * guarantee neither can leave the page hidden if something fails later.
  */
 const bootScript = `(function(){try{var d=document.documentElement;d.classList.add('js-reveal');
 var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var force=/[?&]intro\\b/.test(location.search);var seen=null;
 try{seen=sessionStorage.getItem('njs:intro-seen')}catch(e){}
-if(!rm&&(force||!seen)){d.setAttribute('data-intro','play');
-setTimeout(function(){if(d.getAttribute('data-intro')==='play'){d.setAttribute('data-intro','done')}},8000)}}catch(e){}})();`;
+if(!rm&&(force||!seen)){d.setAttribute('data-intro','play');d.setAttribute('data-shell','on');
+setTimeout(function(){if(d.hasAttribute('data-shell')){d.removeAttribute('data-shell');
+window.dispatchEvent(new CustomEvent('njs:shell-open',{detail:{skip:true}}))}},9500);
+setTimeout(function(){if(d.getAttribute('data-intro')==='play'){d.setAttribute('data-intro','done')}},14000)}}catch(e){}})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

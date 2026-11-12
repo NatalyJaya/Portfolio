@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# heavy 3D source files (not deployed; web versions live in public/models)
+/models-src/

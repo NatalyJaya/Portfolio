@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { SHELL_OPEN_EVENT, type ShellOpenDetail } from "@/components/intro/ShellLoader";
 import { createNeuralField, type FieldHandle, type IntroPhase } from "./field";
 
 const STEPS: { id: Exclude<IntroPhase, "done">; label: string }[] = [
@@ -62,37 +63,51 @@ export default function NeuralField() {
       }
     };
 
-    const field = createNeuralField({
-      canvas,
-      playIntro,
-      reducedMotion,
-      onPhase: setPhase,
-      onProgress: (s) => {
-        if (countRef.current) countRef.current.textContent = String(s.synapses).padStart(3, "0");
-        if (barRef.current) barRef.current.style.transform = `scaleX(${s.synapsesTotal ? s.synapses / s.synapsesTotal : 0})`;
-      },
-      onIntroDone: () => {
-        finish();
-        writeCaption();
-      },
-    });
-    fieldRef.current = field;
-    writeCaption();
-
-    if (!playIntro) return () => field.destroy();
-
     // Any intent to move on skips the sequence.
-    const skip = () => field.skip();
+    const skip = () => fieldRef.current?.skip();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Tab") return; // let keyboard users reach the skip button
       skip();
     };
-    window.addEventListener("wheel", skip, { passive: true, once: true });
-    window.addEventListener("touchmove", skip, { passive: true, once: true });
-    window.addEventListener("keydown", onKey);
+
+    const boot = (skipIntro: boolean) => {
+      const field = createNeuralField({
+        canvas,
+        playIntro,
+        reducedMotion,
+        onPhase: setPhase,
+        onProgress: (s) => {
+          if (countRef.current) countRef.current.textContent = String(s.synapses).padStart(3, "0");
+          if (barRef.current)
+            barRef.current.style.transform = `scaleX(${s.synapsesTotal ? s.synapses / s.synapsesTotal : 0})`;
+        },
+        onIntroDone: () => {
+          finish();
+          writeCaption();
+        },
+      });
+      fieldRef.current = field;
+      writeCaption();
+      if (!playIntro) return;
+      if (skipIntro) field.skip();
+      window.addEventListener("wheel", skip, { passive: true, once: true });
+      window.addEventListener("touchmove", skip, { passive: true, once: true });
+      window.addEventListener("keydown", onKey);
+    };
+
+    // While the shell loader covers the page, the network waits inside it and
+    // only starts seeding as the shell opens.
+    const onShellOpen = (e: Event) => boot(Boolean((e as CustomEvent<ShellOpenDetail>).detail?.skip));
+    if (playIntro && root.dataset.shell === "on") {
+      window.addEventListener(SHELL_OPEN_EVENT, onShellOpen, { once: true });
+    } else {
+      boot(false);
+    }
 
     return () => {
-      field.destroy();
+      fieldRef.current?.destroy();
+      fieldRef.current = null;
+      window.removeEventListener(SHELL_OPEN_EVENT, onShellOpen);
       window.removeEventListener("wheel", skip);
       window.removeEventListener("touchmove", skip);
       window.removeEventListener("keydown", onKey);

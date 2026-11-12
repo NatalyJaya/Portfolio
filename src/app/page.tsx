@@ -1,3 +1,4 @@
+import ShellLoader from "@/components/intro/ShellLoader";
 import Navbar from "@/components/layout/Navbar";
 import RevealObserver from "@/components/ui/RevealObserver";
 import Hero from "@/components/sections/Hero";
@@ -12,6 +13,7 @@ import Contact from "@/components/sections/Contact";
 export default function Home() {
   return (
     <>
+      <ShellLoader />
       <Navbar />
       <Hero />
       <main id="main">
