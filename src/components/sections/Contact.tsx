@@ -85,25 +85,22 @@ export default function Contact() {
             style={{ ["--reveal-delay" as string]: 2 }}
           >
             <div
-              className="gl snap relative w-[56%] max-w-[13rem] overflow-hidden rounded-sm bg-elev shadow-[0_24px_48px_-24px_rgba(0,0,0,0.9)] ring-[6px] ring-bg md:w-[78%]"
+              className="snap relative w-[56%] max-w-[13rem] overflow-hidden rounded-sm bg-elev shadow-[0_24px_48px_-24px_rgba(0,0,0,0.9)] ring-[6px] ring-bg md:w-[78%]"
               style={
                 {
                   aspectRatio: `${droid.width} / ${droid.height}`,
                   ["--tilt"]: "-2.5deg",
-                  ["--src"]: `url("${droid.src}")`,
                 } as CSSProperties
               }
             >
-              <span className="gl-mask absolute inset-0 block">
-                <Image
-                  src={droid}
-                  alt="Nataly dabbing beside a life-size R2-D2 in a dark room."
-                  fill
-                  sizes="13rem"
-                  placeholder="blur"
-                  className="object-cover"
-                />
-              </span>
+              <Image
+                src={droid}
+                alt="Nataly dabbing beside a life-size R2-D2 in a dark room."
+                fill
+                sizes="13rem"
+                placeholder="blur"
+                className="object-cover grayscale-[35%] transition duration-700 hover:grayscale-0"
+              />
             </div>
             <figcaption className="mt-5">
               <span className="label text-fg">Fig. 7</span>
