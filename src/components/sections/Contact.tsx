@@ -76,6 +76,7 @@ export default function Contact() {
           </div>
         </div>
 
+
         <footer className="mt-24 flex flex-col gap-4 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {profile.name}
