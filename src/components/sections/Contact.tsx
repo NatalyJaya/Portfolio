@@ -108,7 +108,7 @@ export default function Contact() {
             <figcaption className="mt-5">
               <span className="label text-fg">Fig. 7</span>
               <span className="mt-1.5 block max-w-[14rem] font-serif text-base italic leading-snug text-muted">
-                R2-D2 held still. I did the dab.
+                I did the dab.
               </span>
             </figcaption>
           </figure>

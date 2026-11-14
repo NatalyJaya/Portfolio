@@ -281,4 +281,3 @@ export const events: JourneyEvent[] = [
 
 /** Every event photo in timeline order — the lightbox's set, Fig. 6.1 onwards. */
 export const featured = events.flatMap((event) => (event.frames ?? []).map((frame) => ({ frame, event })));
-
