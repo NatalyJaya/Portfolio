@@ -740,7 +740,7 @@ dialog::backdrop {
 }
 .fig .fig-title {
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   fill: var(--fg);
   letter-spacing: -0.01em;
 }
