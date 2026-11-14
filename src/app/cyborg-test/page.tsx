@@ -10,6 +10,20 @@ export default function CyborgTestPage() {
   return (
     <div style={{ position: "fixed", inset: 0 }}>
       <CyborgScene debug />
+      <p
+        style={{
+          position: "absolute",
+          left: 16,
+          bottom: 16,
+          margin: 0,
+          font: "11px/1.4 ui-monospace, monospace",
+          letterSpacing: "0.08em",
+          color: "#7d8393",
+          pointerEvents: "none",
+        }}
+      >
+        R — repetir · S — cámara lenta · arrastrar — girar
+      </p>
     </div>
   );
 }
