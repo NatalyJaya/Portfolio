@@ -1,3 +1,6 @@
+import type { CSSProperties } from "react";
+import Image from "next/image";
+import droid from "@/assets/photos/goofy-star-wars.jpg";
 import { ArrowUp, ArrowUpRight, Download, SocialIcon } from "@/components/ui/Icons";
 import { profile, socials } from "@/content/profile";
 import { withBase } from "@/lib/utils";
@@ -14,12 +17,12 @@ export default function Contact() {
         style={{ background: "radial-gradient(50% 60% at 50% 100%, rgba(169,155,255,0.10), transparent 70%)" }}
       />
       <div className="page pb-10 pt-24 md:pt-32">
-        <div className="rule grid grid-cols-12 gap-x-6 gap-y-10 pt-6 md:pt-8">
+        <div className="rule grid grid-cols-12 gap-x-6 gap-y-10 pt-6 md:grid-rows-[auto_1fr] md:pt-8">
           <p className="label col-span-12 md:col-span-3" data-reveal>
             <span className="text-fg">§ 07</span>
             <span className="mx-2 text-line-strong">/</span>Contact
           </p>
-          <div className="col-span-12 md:col-span-9">
+          <div className="col-span-12 md:col-span-9 md:row-span-2">
             <h2
               id="contact-title"
               className="text-balance font-serif text-[clamp(2.5rem,7vw,6rem)] font-light leading-[0.98] tracking-[-0.03em]"
@@ -74,6 +77,41 @@ export default function Contact() {
               </li>
             </ul>
           </div>
+
+          {/* A sign-off print: under the section label on desktop, after the links on mobile. */}
+          <figure
+            className="col-span-12 md:col-span-3 md:col-start-1 md:row-start-2 md:self-start"
+            data-reveal
+            style={{ ["--reveal-delay" as string]: 2 }}
+          >
+            <div
+              className="gl snap relative w-[56%] max-w-[13rem] overflow-hidden rounded-sm bg-elev shadow-[0_24px_48px_-24px_rgba(0,0,0,0.9)] ring-[6px] ring-bg md:w-[78%]"
+              style={
+                {
+                  aspectRatio: `${droid.width} / ${droid.height}`,
+                  ["--tilt"]: "-2.5deg",
+                  ["--src"]: `url("${droid.src}")`,
+                } as CSSProperties
+              }
+            >
+              <span className="gl-mask absolute inset-0 block">
+                <Image
+                  src={droid}
+                  alt="Nataly dabbing beside a life-size R2-D2 in a dark room."
+                  fill
+                  sizes="13rem"
+                  placeholder="blur"
+                  className="object-cover"
+                />
+              </span>
+            </div>
+            <figcaption className="mt-5">
+              <span className="label text-fg">Fig. 7</span>
+              <span className="mt-1.5 block max-w-[14rem] font-serif text-base italic leading-snug text-muted">
+                R2-D2 held still. I did the dab.
+              </span>
+            </figcaption>
+          </figure>
         </div>
 
 

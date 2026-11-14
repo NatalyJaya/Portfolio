@@ -331,6 +331,362 @@ dialog::backdrop {
   background: rgba(4, 5, 7, 0.94);
 }
 
+/* =========================================================================
+   Journey — the timeline, its stage, and the lightbox.
+   One easing (--ease-out), one accent (the cyan seam the shell loader opens
+   with), and the shell's own door timing run through all of it.
+   ========================================================================= */
+
+/* Outlined serif numerals: the quiet "big number" of the section. */
+.outline-num {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 300;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--fg) 24%, transparent);
+}
+
+/* --- Timeline rows: one line each until they are asked for more. --- */
+.tl-row {
+  transition: opacity 0.5s var(--ease-out);
+}
+.tl-list[data-has-active] .tl-row:not([data-on]) {
+  opacity: 0.4;
+}
+.tl-list[data-has-active] .tl-row:not([data-on]):hover {
+  opacity: 0.75;
+}
+/* A cyan hairline draws in front of the open event — the seam, in miniature. */
+.tl-tick {
+  display: inline-block;
+  width: 0;
+  height: 1px;
+  margin-right: 0;
+  align-self: center;
+  background: var(--cyan);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--cyan) 60%, transparent);
+  transition:
+    width 0.55s var(--ease-out),
+    margin-right 0.55s var(--ease-out);
+}
+.tl-row[data-on] .tl-tick {
+  width: 1.25rem;
+  margin-right: 0.75rem;
+}
+/* One hairline frame per photo: which events are "in frame". */
+.tl-frames {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 0.75rem;
+  align-self: center;
+}
+.tl-frames > i {
+  width: 6px;
+  height: 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 1px;
+  transition: border-color 0.4s var(--ease-out);
+}
+.tl-frames > i[data-snap] {
+  rotate: 12deg;
+}
+.tl-row:hover .tl-frames > i,
+.tl-row[data-on] .tl-frames > i {
+  border-color: var(--cyan);
+}
+
+/* Casual snapshots are laid down as tilted prints; they straighten when picked up. */
+.snap {
+  rotate: var(--tilt, 0deg);
+  transition:
+    rotate 0.7s var(--ease-out),
+    scale 0.7s var(--ease-out);
+}
+.snap:hover,
+.snap:focus-visible {
+  z-index: 3;
+  rotate: 0deg;
+  scale: 1.03;
+}
+
+/* --- Stage (desktop): panels stacked and crossfaded. Only the open one is in
+   flow, so at rest the stage is as short as its hint, not its tallest panel. --- */
+.tl-stage {
+  position: relative;
+  animation: fade-in 0.8s var(--ease-out) backwards;
+}
+.tl-panel {
+  position: absolute;
+  inset: 0 0 auto;
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 4px;
+  transition:
+    opacity 0.3s var(--ease-out),
+    translate 0.5s var(--ease-out),
+    visibility 0s linear 0.3s;
+}
+.tl-panel[data-on] {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  translate: none;
+  transition:
+    opacity 0.6s var(--ease-out) 0.08s,
+    translate 0.9s var(--ease-out) 0.08s,
+    visibility 0s;
+}
+
+/* --- Ghost in the shell: a photo resolves out of signal noise. ------------
+   Short and quiet: a few torn scan bands, the colour channels slipping apart
+   for a beat, a scan bar passing down — then the image settles. `.gl` is the
+   frame; `.gl-mask` wraps the image. `--src` / `--pos` give the channel
+   ghosts the same picture and crop as the <img>. Plays when a stage panel or
+   drawer opens (`.tl-reveal[data-on]`), or when a figure scrolls into view. */
+.gl {
+  isolation: isolate;
+}
+.gl-mask::before,
+.gl-mask::after,
+.gl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background-image: var(--src);
+  background-position: var(--pos, 50% 50%);
+  background-size: cover;
+  background-blend-mode: multiply;
+  mix-blend-mode: screen;
+}
+.gl-mask::before,
+.gl::before {
+  --dx: -1;
+  background-color: #00e5ff;
+}
+.gl-mask::after {
+  --dx: 1;
+  background-color: #ff2d55;
+}
+/* Scanlines and a single bar sweeping down, only while resolving. */
+.gl::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(to bottom, transparent, color-mix(in srgb, var(--cyan) 34%, transparent) 50%, transparent) 0 -30% / 100% 20%
+      no-repeat,
+    repeating-linear-gradient(to bottom, color-mix(in srgb, var(--cyan) 12%, transparent) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen;
+}
+
+@keyframes gl-resolve {
+  0% {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    translate: 0 0;
+  }
+  10% {
+    opacity: 0.7;
+    clip-path: inset(22% 0 54% 0);
+    translate: -3px 0;
+  }
+  20% {
+    opacity: 0.3;
+    clip-path: inset(48% 0 28% 0);
+    translate: 2px 0;
+  }
+  32% {
+    opacity: 0.9;
+    clip-path: inset(0 0 38% 0);
+    translate: -1px 0;
+  }
+  44% {
+    opacity: 0.55;
+    clip-path: inset(58% 0 8% 0);
+    translate: 2px 0;
+  }
+  56% {
+    opacity: 1;
+    clip-path: inset(0);
+    translate: 0 0;
+  }
+  70% {
+    opacity: 0.85;
+  }
+  80%,
+  100% {
+    opacity: 1;
+    clip-path: inset(0);
+    translate: 0 0;
+  }
+}
+@keyframes gl-settle {
+  from {
+    scale: 1.02;
+  }
+  to {
+    scale: 1;
+  }
+}
+@keyframes gl-ghost {
+  0%,
+  8% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  10% {
+    opacity: 0.6;
+    translate: calc(var(--dx) * 6px) 0;
+  }
+  22% {
+    opacity: 0.28;
+    translate: calc(var(--dx) * -3px) 0;
+  }
+  34% {
+    opacity: 0.5;
+    translate: calc(var(--dx) * 4px) 0;
+  }
+  48% {
+    opacity: 0.18;
+    translate: calc(var(--dx) * 2px) 0;
+  }
+  62%,
+  100% {
+    opacity: 0;
+    translate: 0 0;
+  }
+}
+@keyframes gl-scan {
+  0% {
+    opacity: 0.9;
+    background-position:
+      0 -30%,
+      0 0;
+  }
+  70% {
+    opacity: 0.45;
+    background-position:
+      0 130%,
+      0 0;
+  }
+  100% {
+    opacity: 0;
+    background-position:
+      0 130%,
+      0 0;
+  }
+}
+
+.tl-reveal[data-on] .gl-mask,
+.js-reveal [data-reveal].is-visible .gl-mask {
+  animation:
+    gl-resolve 0.56s steps(1, end) calc(0.1s + var(--i, 0) * 90ms) backwards,
+    gl-settle 1s var(--ease-out) calc(0.1s + var(--i, 0) * 90ms) backwards;
+}
+.tl-reveal[data-on] .gl-mask::before,
+.tl-reveal[data-on] .gl-mask::after,
+.js-reveal [data-reveal].is-visible .gl-mask::before,
+.js-reveal [data-reveal].is-visible .gl-mask::after {
+  animation: gl-ghost 0.6s steps(1, end) calc(0.1s + var(--i, 0) * 90ms) backwards;
+}
+.tl-reveal[data-on] .gl::after,
+.js-reveal [data-reveal].is-visible .gl::after {
+  animation: gl-scan 0.8s linear calc(0.1s + var(--i, 0) * 90ms) backwards;
+}
+/* A single twitch when the pointer lands on a photo. */
+@media (hover: hover) {
+  .gl:hover::before {
+    animation: gl-ghost 0.42s steps(1, end);
+  }
+}
+
+/* --- Drawers (touch / narrow): the row opens in place. --- */
+.tl-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-out);
+}
+.tl-drawer[data-on] {
+  grid-template-rows: 1fr;
+}
+.tl-drawer > div {
+  min-height: 0;
+  overflow: hidden;
+}
+.tl-drawer-inner {
+  opacity: 0;
+  translate: 0 -6px;
+  transition:
+    opacity 0.3s var(--ease-out),
+    translate 0.5s var(--ease-out);
+}
+.tl-drawer[data-on] .tl-drawer-inner {
+  opacity: 1;
+  translate: none;
+  transition-delay: 0.12s;
+}
+.tl-strip {
+  --h: min(62vw, 19rem);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.625rem 0.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.tl-strip::-webkit-scrollbar {
+  display: none;
+}
+.tl-strip > * {
+  flex: none;
+  height: var(--h);
+  width: calc(var(--h) * var(--ar));
+  scroll-snap-align: start;
+}
+
+/* --- Lightbox --- */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+}
+.lightbox[open] {
+  animation: lightbox-in 0.55s var(--ease-out) backwards;
+}
+.lightbox[open]::backdrop {
+  animation: fade-in 0.55s var(--ease-out) backwards;
+}
+/* Each photo in the lightbox resolves with the same brief signal glitch. */
+.lightbox-photo {
+  animation:
+    gl-resolve 0.5s steps(1, end) backwards,
+    gl-settle 0.9s var(--ease-out) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gl-mask,
+  .gl-mask::before,
+  .gl-mask::after,
+  .gl::before,
+  .gl::after,
+  .lightbox-photo {
+    animation: none !important;
+  }
+}
+
 /* Signal travelling along a schematic path (project figures). */
 @keyframes dash-flow {
   to {

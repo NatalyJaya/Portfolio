@@ -1,6 +1,6 @@
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
-import portrait from "@/assets/photos/4yfn-2026.jpg";
+import portrait from "@/assets/photos/upc-workshop.jpg";
 import { certificates, community, education, spokenLanguages, type LedgerItem } from "@/content/profile";
 
 function Ledger({ title, items }: { title: string; items: LedgerItem[] }) {

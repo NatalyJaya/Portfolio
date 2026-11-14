@@ -22,7 +22,7 @@ A personal portfolio website built with **Next.js**, **TypeScript**, and **Tailw
 A single-page portfolio with an editorial, "neural field" identity:
 
 - **Opening sequence**: a live Canvas 2D network forms (nodes → synapses → signal) and becomes the hero background. It plays once per session; `?intro` forces a replay. It respects `prefers-reduced-motion` and pauses off-screen.
-- **About**, **Selected work** (three case studies with schematics drawn from each codebase), **Open notebooks** (learning resources), **Skills** (a draggable "connectome" where each skill links to its evidence, plus an index view), **Research interests & writing**, **Journey** (gallery + lightbox) and **Contact**.
+- **About**, **Selected work** (three case studies with schematics drawn from each codebase), **Open notebooks** (learning resources), **Skills** (a draggable "connectome" where each skill links to its evidence, plus an index view), **Research interests & writing**, **Journey** (a one-line-per-event chronological timeline; hovering a name — or tapping it on mobile — opens its notes and photos) and **Contact**.
 
 No runtime dependencies beyond Next.js and React.
 
@@ -46,7 +46,8 @@ No runtime dependencies beyond Next.js and React.
 ```
 src/
 ├── app/                 # layout (fonts, metadata, pre-paint intro script), page, globals.css, icon
-├── assets/photos/       # optimised JPEGs used by the gallery/about
+├── assets/photos/       # optimised JPEGs used by the Journey section and About
+│                        # (full-size originals live in photos-src/, outside the bundle)
 ├── components/
 │   ├── neural/          # field.ts (simulation engine) + NeuralField.tsx (intro overlay)
 │   ├── figures/         # project schematics (SVG / code)
@@ -59,14 +60,14 @@ src/
 │   ├── resources.ts     # open notebooks
 │   ├── skills.ts        # skills + evidence
 │   ├── writing.ts       # interests + articles (placeholders until published)
-│   └── journey.ts       # gallery entries
+│   └── journey.ts       # timeline events and their photos
 └── lib/utils.ts
 ```
 
 ### Updating content
 
 - **Publish an article**: replace a placeholder in `src/content/writing.ts` with a `status: "published"` entry (the file has a template).
-- **Add a gallery photo**: drop a JPEG (≤1400px wide) into `src/assets/photos/`, import it in `src/content/journey.ts` and set `image` on the entry.
+- **Add a photo**: keep the original in `photos-src/`, export a web JPEG (≤1600px on the long edge, ~72% quality, no EXIF/GPS) into `src/assets/photos/`, import it in `src/content/journey.ts`, and add it to the `frames` of the event it belongs to (shown when the event is opened; add a `tilt` to lay a casual shot down as a tilted print). Each photo appears once on the page. Events are listed oldest first in `events`.
 - **Add project screenshots**: set `media` on a project in `src/content/projects.ts`.
 - **Add a skill**: append to `src/content/skills.ts` with the places it was used (`evidence`). Size in the sphere is derived from that count.
 
