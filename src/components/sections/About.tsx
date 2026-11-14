@@ -42,7 +42,7 @@ export default function About() {
               placeholder="blur"
             />
           </div>
-          <figcaption className="label mt-3">Fig. 1 — 4YFN, Barcelona, 2026</figcaption>
+          <figcaption className="label mt-3">Fig. 1 — UPC, Barcelona, 2026</figcaption>
         </figure>
 
         <div className="col-span-12 md:col-span-8 md:pl-6 lg:pl-12">
