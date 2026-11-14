@@ -56,8 +56,7 @@ export default function Hero() {
             className="hero-reveal max-w-xl text-pretty text-base leading-relaxed text-muted sm:text-[1.0625rem]"
             style={{ ["--d" as string]: 3 }}
           >
-            I build web platforms and developer tools in teams, and I&apos;m steering that foundation towards
-            machine learning for healthcare and computational neuroscience.
+            Somewhere between engineering and neuroscience, I'm exploring how computation can help us understand the human brain. Still building and still questioning.
           </p>
         </div>
 

@@ -28,7 +28,7 @@ function Ledger({ title, items }: { title: string; items: LedgerItem[] }) {
 export default function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="page py-24 md:py-32">
-      <SectionHeader index="01" eyebrow="About" id="about-title" title="The person behind the commits" />
+      <SectionHeader index="01" eyebrow="About" id="about-title" title="The ghost behind the shell" />
 
       <div className="mt-14 grid grid-cols-12 gap-x-6 gap-y-12 md:mt-20">
         <figure className="col-span-12 sm:col-span-6 md:col-span-4" data-reveal>
@@ -50,15 +50,10 @@ export default function About() {
             className="text-pretty font-serif text-[clamp(1.5rem,2.6vw,2.125rem)] font-light leading-[1.3] tracking-[-0.01em] text-fg"
             data-reveal
           >
-            I&apos;m Nataly, a Computer Engineering student at the Universitat de Lleida. Most of what I know about
-            software I learned by building it with other people: a streaming platform over a semester, an IntelliJ
-            plugin over a hackathon weekend, and a Python package at my very first hackathon.
+            I&apos;m Nataly, a Computer Engineering student at the Universitat de Lleida
           </p>
           <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-muted" data-reveal>
-            Now I&apos;m pointing that engineering at a different kind of problem. I&apos;m studying machine learning
-            for healthcare and moving towards computational neuroscience: how computation can help us understand the
-            brain and, eventually, neurological disorders. I&apos;m early on that path, so this site shows what
-            I&apos;ve built and what I&apos;m still learning, without inflating either.
+            I've always been drawn to understanding how things work and what can be built with technology. My background is rooted in software engineering, but my curiosity has been leading me towards machine learning, healthcare, and computational neuroscience. I'm interested in exploring how computation can help us understand something as complex as the human brain.
           </p>
 
           <div className="mt-14 grid gap-10 lg:grid-cols-2">

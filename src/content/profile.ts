@@ -7,7 +7,7 @@ export const profile = {
   name: "Nataly Jaya Salazar",
   shortName: "Nataly",
   monogram: "NJS",
-  positioning: "An engineer with a scientific mindset.",
+  positioning: "An engineer with a research mindset.",
   role: "Computer Engineering student",
   institution: "Universitat de Lleida",
   email: "njayasalazar@gmail.com",

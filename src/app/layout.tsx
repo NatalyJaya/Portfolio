@@ -32,7 +32,7 @@ const description =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Nataly Jaya Salazar — Software engineering with a scientific mindset",
+    default: "Nataly Jaya Salazar — Software engineering with a research mindset",
     template: "%s — Nataly Jaya Salazar",
   },
   description,

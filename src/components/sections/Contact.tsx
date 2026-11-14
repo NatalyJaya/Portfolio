@@ -116,7 +116,7 @@ export default function Contact() {
           <p>
             © {year} {profile.name}
           </p>
-          <p className="font-mono">Next.js · Canvas 2D neural field · no tracking</p>
+          <p className="font-mono">As long as the Sun, the Moon, and the Earth exist, everything will be all right</p>
           <a href="#top" className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg">
             Back to top <ArrowUp width={14} height={14} />
           </a>

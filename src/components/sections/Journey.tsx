@@ -19,7 +19,7 @@ export default function Journey() {
         index="06"
         eyebrow="Personal journey"
         id="journey-title"
-        title="Field notes from the community"
+        title="Can't Catch Me Now"
         lede="Conferences and hackathons where I learned to build with other people, in the order they happened. Open one to see its frames."
       />
 

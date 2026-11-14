@@ -100,7 +100,7 @@ export default function Notebooks() {
         eyebrow="Learning resources"
         id="notebooks-title"
         title="Open notebooks"
-        lede="Not portfolio pieces. These are samples and templates I wrote so other people (and future me) can pick up a concept by running it."
+        lede="These are samples and templates I wrote so other people (and future me) can pick up a concept by running it."
       />
       <ol className="mt-14 border-b border-line md:mt-20">
         {resources.map((r, i) => (
