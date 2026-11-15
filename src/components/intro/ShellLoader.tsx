@@ -5,9 +5,7 @@ import { useEffect, useRef } from "react";
 import shellImage from "@/assets/intro/shell.png";
 import { createShellRenderer, type ShellRenderer } from "./shell";
 
-/** Fired on window when the shell starts opening; the neural field boots then. */
-export const SHELL_OPEN_EVENT = "njs:shell-open";
-export type ShellOpenDetail = { skip: boolean };
+import { SHELL_OPEN_EVENT, type ShellOpenDetail } from "./events";
 
 // Timeline (ms)
 const MIN_MS = 2400; // shortest time on screen, so the scan reads as a moment

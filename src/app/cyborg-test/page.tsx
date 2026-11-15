@@ -22,7 +22,7 @@ export default function CyborgTestPage() {
           pointerEvents: "none",
         }}
       >
-        R — repetir · S — cámara lenta · arrastrar — girar
+        R — repetir · S — cámara lenta · Z — zoom dentro · arrastrar — girar
       </p>
     </div>
   );

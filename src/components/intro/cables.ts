@@ -21,6 +21,10 @@ export type CableSpec = {
   slack: number;
   /** Axis of the plug in model space: the cable leaves along it. Defaults to straight up. */
   exit?: readonly [number, number, number];
+  /** Plugged into the brain's cap rather than the body, so it follows the cap when it lifts. */
+  onCap?: boolean;
+  /** A dim pulse of this colour travels down the cable into the bust. */
+  glow?: string;
 };
 
 export type CableRig = {
@@ -35,8 +39,16 @@ export type CableRig = {
    *    the idle sway can't make it go limp.
    *
    * @param anchorMatrix model space → the space `group` lives in
+   * @param capMatrix model space → same, for the cables plugged into the brain's cap
    */
-  update(dt: number, time: number, anchorMatrix: THREE.Matrix4, caught: number, settled: number): void;
+  update(
+    dt: number,
+    time: number,
+    anchorMatrix: THREE.Matrix4,
+    capMatrix: THREE.Matrix4,
+    caught: number,
+    settled: number,
+  ): void;
   dispose(): void;
 };
 
@@ -80,6 +92,7 @@ class Cable {
   private readonly slack: number;
   private readonly radius: number;
   private readonly phase: number;
+  readonly onCap: boolean;
 
   constructor(spec: CableSpec, material: THREE.Material, index: number) {
     this.top = new THREE.Vector3(...spec.ceiling);
@@ -88,6 +101,7 @@ class Cable {
     this.restLength = this.top.distanceTo(this.anchor) * (1 + spec.slack);
     this.slack = spec.slack;
     this.radius = spec.radius;
+    this.onCap = spec.onCap ?? false;
     this.phase = index * 2.399; // golden angle: no two cables drift in sync
 
     for (let i = 0; i < POINTS; i++) {
@@ -116,7 +130,11 @@ class Cable {
         index16[k++] = c;
       }
     }
+    // u runs 0 (ceiling) → 1 (plug): the glow shader travels along it.
+    const along = new Float32Array(vertices * 2);
+    for (let i = 0; i <= RINGS; i++) for (let j = 0; j < SIDES; j++) along[(i * SIDES + j) * 2] = i / RINGS;
     const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("uv", new THREE.BufferAttribute(along, 2));
     geometry.setAttribute("position", this.position);
     geometry.setAttribute("normal", this.normal);
     geometry.setIndex(new THREE.BufferAttribute(index16, 1));
@@ -268,12 +286,41 @@ class Cable {
   }
 }
 
+/** Cable material with a soft band of light running down it, towards the plug. */
+function glowMaterial(spec: CableSpec, index: number, clock: { value: number }) {
+  const material = new THREE.MeshStandardMaterial({ color: spec.color, roughness: 0.42, metalness: 0.15 });
+  const glow = { value: new THREE.Color(spec.glow) };
+  const offset = (index * 0.37) % 1;
+  material.onBeforeCompile = (shader) => {
+    shader.uniforms.uTime = clock;
+    shader.uniforms.uGlow = glow;
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", "#include <common>\nvarying float vAlong;")
+      .replace("#include <begin_vertex>", "#include <begin_vertex>\nvAlong = uv.x;");
+    shader.fragmentShader = shader.fragmentShader
+      .replace("#include <common>", "#include <common>\nvarying float vAlong;\nuniform float uTime;\nuniform vec3 uGlow;")
+      .replace(
+        "#include <emissivemap_fragment>",
+        `#include <emissivemap_fragment>
+        float band = fract(vAlong * 2.0 - uTime * 0.22 + ${offset.toFixed(3)});
+        float pulse = smoothstep(0.0, 0.05, band) * smoothstep(0.2, 0.05, band);
+        totalEmissiveRadiance += uGlow * (0.04 + pulse * 0.55);`,
+      );
+  };
+  return material;
+}
+
 export function createCableRig(specs: readonly CableSpec[]): CableRig {
   const group = new THREE.Group();
   const materials = new Map<string, THREE.MeshStandardMaterial>();
+  const glowing: THREE.Material[] = [];
+  const clock = { value: 0 };
   const cables = specs.map((spec, i) => {
     let material = materials.get(spec.color);
-    if (!material) {
+    if (spec.glow) {
+      material = glowMaterial(spec, i, clock);
+      glowing.push(material);
+    } else if (!material) {
       material = new THREE.MeshStandardMaterial({ color: spec.color, roughness: 0.42, metalness: 0.15 });
       materials.set(spec.color, material);
     }
@@ -290,8 +337,9 @@ export function createCableRig(specs: readonly CableSpec[]): CableRig {
     reset() {
       fresh = true;
     },
-    update(dt, time, anchorMatrix, caught, settled) {
-      for (const cable of cables) cable.place(anchorMatrix);
+    update(dt, time, anchorMatrix, capMatrix, caught, settled) {
+      clock.value = time;
+      for (const cable of cables) cable.place(cable.onCap ? capMatrix : anchorMatrix);
       if (fresh) {
         for (const cable of cables) cable.lay();
         fresh = false;
@@ -307,6 +355,7 @@ export function createCableRig(specs: readonly CableSpec[]): CableRig {
     dispose() {
       for (const cable of cables) cable.mesh.geometry.dispose();
       for (const material of materials.values()) material.dispose();
+      for (const material of glowing) material.dispose();
       group.clear();
     },
   };

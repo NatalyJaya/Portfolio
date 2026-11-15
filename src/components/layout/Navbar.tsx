@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cx } from "@/lib/utils";
+import Logo from "./Logo";
 
 export const navItems = [
   { id: "about", label: "About" },
@@ -61,13 +62,7 @@ export default function Navbar() {
       )}
     >
       <nav aria-label="Primary" className="page flex h-[var(--nav-h)] items-center justify-between">
-        <a href="#top" className="group flex items-center gap-2.5" onClick={() => setOpen(false)}>
-          <span aria-hidden="true" className="relative flex h-2 w-2">
-            <span className="pulse-dot absolute inset-0 rounded-full bg-cyan" />
-          </span>
-          <span className="font-mono text-xs tracking-[0.18em] text-fg">NJS</span>
-          <span className="sr-only">Nataly Jaya Salazar — back to top</span>
-        </a>
+        <Logo onClick={() => setOpen(false)} />
 
         <ul className="hidden items-center gap-1 lg:flex">
           {navItems.map((item, i) => (

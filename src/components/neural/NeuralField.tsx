@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SHELL_OPEN_EVENT, type ShellOpenDetail } from "@/components/intro/ShellLoader";
+import { SHELL_OPEN_EVENT, type ShellOpenDetail } from "@/components/intro/events";
 import { createNeuralField, type FieldHandle, type IntroPhase } from "./field";
 
 const STEPS: { id: Exclude<IntroPhase, "done">; label: string }[] = [

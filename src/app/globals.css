@@ -212,6 +212,15 @@ html[data-shell="open"] .shell {
 html[data-shell="open"] .shell {
   pointer-events: none;
 }
+/* Cyborg loader: no doors — the camera dives into the head and the whole
+   screen fades to the page underneath. */
+.shell-cyborg {
+  background: var(--bg);
+  transition: opacity 0.7s var(--ease-out);
+}
+html[data-shell="open"] .shell-cyborg {
+  opacity: 0;
+}
 
 .shell-door {
   position: absolute;
@@ -709,6 +718,189 @@ dialog::backdrop {
 }
 .pulse-dot {
   animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------------------
+   NJS logo — a neuron. Dot = soma; it fires, the signal runs through N·J·S;
+   hover/focus unfolds the initials into the full name.
+   ------------------------------------------------------------------------- */
+.njs-logo {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  width: 3.75rem; /* fixed: the unfolded name overlays, never shifts the nav */
+  height: 2.5rem;
+  --cycle: 7s;
+}
+.njs-logo__inner {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.njs-soma {
+  position: relative;
+  display: block;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-right: 0.7rem;
+}
+.njs-core,
+.njs-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+}
+.njs-core {
+  background: var(--cyan);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--cyan) 60%, transparent);
+  animation: njs-core var(--cycle) ease-in-out infinite;
+}
+.njs-ring {
+  border: 1px solid var(--cyan);
+  opacity: 0;
+  animation: njs-fire var(--cycle) ease-out infinite;
+}
+.njs-part {
+  display: inline-flex;
+  align-items: baseline;
+}
+.njs-initial {
+  letter-spacing: 0.18em;
+  color: var(--fg);
+  animation: njs-spike var(--cycle) ease-out infinite;
+  animation-delay: calc(0.14s + var(--i) * 0.17s);
+}
+.njs-part:last-child .njs-initial {
+  letter-spacing: 0;
+}
+.njs-rest {
+  display: inline-block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  letter-spacing: 0.02em;
+  color: var(--fg-muted);
+  transition:
+    max-width 0.55s var(--ease-out) calc(var(--i) * 70ms),
+    opacity 0.35s ease calc(var(--i) * 70ms);
+}
+.njs-rest > span {
+  display: block;
+  padding-right: 0.7em;
+}
+.njs-part:last-child .njs-rest > span {
+  padding-right: 0;
+}
+.njs-logo:hover .njs-rest,
+.njs-logo:focus-visible .njs-rest {
+  max-width: 6em;
+  opacity: 1;
+}
+.njs-logo:hover .njs-initial,
+.njs-logo:focus-visible .njs-initial {
+  animation: njs-spike-fast 0.8s ease-out 1 backwards;
+  animation-delay: calc(0.08s + var(--i) * 0.09s);
+}
+.njs-logo:hover .njs-ring,
+.njs-logo:focus-visible .njs-ring {
+  animation: njs-fire-fast 0.8s ease-out 1;
+}
+.njs-logo:hover .njs-core,
+.njs-logo:focus-visible .njs-core {
+  animation: njs-core-fast 0.8s ease-out 1;
+}
+
+@keyframes njs-core {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  /* the spike: brighter + amber for a beat, then settle */
+  1.5% {
+    opacity: 1;
+    transform: scale(1.35);
+    background: var(--amber);
+  }
+  6% {
+    opacity: 0.55;
+    transform: scale(1);
+    background: var(--cyan);
+  }
+}
+@keyframes njs-fire {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  9% {
+    opacity: 0;
+    transform: scale(3.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.6);
+  }
+}
+@keyframes njs-spike {
+  0% {
+    color: var(--fg);
+    text-shadow: none;
+  }
+  2% {
+    color: var(--cyan);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--cyan) 70%, transparent);
+  }
+  8%,
+  100% {
+    color: var(--fg);
+    text-shadow: none;
+  }
+}
+@keyframes njs-core-fast {
+  0% {
+    transform: scale(1.5);
+    background: var(--amber);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    background: var(--cyan);
+    opacity: 0.8;
+  }
+}
+@keyframes njs-fire-fast {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.6);
+  }
+}
+@keyframes njs-spike-fast {
+  0% {
+    color: var(--fg);
+  }
+  25% {
+    color: var(--cyan);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--cyan) 70%, transparent);
+  }
+  100% {
+    color: var(--fg);
+    text-shadow: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

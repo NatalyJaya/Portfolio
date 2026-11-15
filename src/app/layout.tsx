@@ -74,8 +74,8 @@ var force=/[?&]intro\\b/.test(location.search);var seen=null;
 try{seen=sessionStorage.getItem('njs:intro-seen')}catch(e){}
 if(!rm&&(force||!seen)){d.setAttribute('data-intro','play');d.setAttribute('data-shell','on');
 setTimeout(function(){if(d.hasAttribute('data-shell')){d.removeAttribute('data-shell');
-window.dispatchEvent(new CustomEvent('njs:shell-open',{detail:{skip:true}}))}},9500);
-setTimeout(function(){if(d.getAttribute('data-intro')==='play'){d.setAttribute('data-intro','done')}},14000)}}catch(e){}})();`;
+window.dispatchEvent(new CustomEvent('njs:shell-open',{detail:{skip:true}}))}},13000);
+setTimeout(function(){if(d.getAttribute('data-intro')==='play'){d.setAttribute('data-intro','done')}},18000)}}catch(e){}})();`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
