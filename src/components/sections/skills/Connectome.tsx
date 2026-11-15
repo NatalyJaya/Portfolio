@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { skillCategories, skills, type Skill, type SkillCategory } from "@/content/skills";
 import { cx } from "@/lib/utils";
+import { buildBrain, type V3 } from "./brain";
 
 type Filter = "all" | SkillCategory;
 
@@ -16,29 +17,23 @@ const catRGB: Record<SkillCategory, string> = {
   infra: "240,184,110",
 };
 
-type V3 = { x: number; y: number; z: number };
-
 /**
- * Lay tags on a Fibonacci sphere, then give each category its own "region"
- * around a tetrahedral direction (round-robin greedy assignment keeps the
- * regions balanced). Synapses: 2 nearest same-region neighbours per tag, plus
- * a few bridges between regions.
+ * Lay tags on the cortex of a procedural brain, each category in its own lobe
+ * (languages → frontal, web → parietal, data → temporal, infra → occipital);
+ * a round-robin greedy assignment keeps the regions balanced. Synapses: 2
+ * nearest same-region neighbours per tag, plus a few bridges between regions.
  */
 function buildGraph(list: Skill[]) {
   const n = list.length;
-  const pts: V3[] = Array.from({ length: n }, (_, i) => {
-    const phi = Math.acos(-1 + (2 * i + 1) / n);
-    const theta = Math.sqrt(n * Math.PI) * phi;
-    return { x: Math.cos(theta) * Math.sin(phi), y: Math.sin(theta) * Math.sin(phi), z: Math.cos(phi) };
-  });
-  const s = 1 / Math.sqrt(3);
-  const centroids: Record<SkillCategory, V3> = {
-    languages: { x: s, y: s, z: s },
-    web: { x: -s, y: -s, z: s },
-    data: { x: -s, y: s, z: -s },
-    infra: { x: s, y: -s, z: -s },
+  const brain = buildBrain(n);
+  const pts = brain.spots;
+  const { frontal, parietal, temporal, occipital } = brain.regions;
+  const centroids: Record<SkillCategory, V3[]> = {
+    languages: [frontal],
+    web: [parietal],
+    data: temporal,
+    infra: [occipital],
   };
-  const dot = (a: V3, b: V3) => a.x * b.x + a.y * b.y + a.z * b.z;
   const dist = (a: V3, b: V3) => Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
 
   const queues = skillCategories.map((c) => ({ id: c.id, idx: list.flatMap((sk, i) => (sk.category === c.id ? [i] : [])) }));
@@ -50,11 +45,11 @@ function buildGraph(list: Skill[]) {
       const skillIdx = q.idx.shift();
       if (skillIdx === undefined) continue;
       let best = -1;
-      let bestDot = -Infinity;
+      let bestD = Infinity;
       free.forEach((p) => {
-        const d = dot(pts[p], centroids[q.id]);
-        if (d > bestDot) {
-          bestDot = d;
+        const d = Math.min(...centroids[q.id].map((c) => dist(pts[p], c)));
+        if (d < bestD) {
+          bestD = d;
           best = p;
         }
       });
@@ -88,7 +83,7 @@ function buildGraph(list: Skill[]) {
     .slice(0, 8);
   bridges.forEach(({ i, j }) => add(i, j, null));
 
-  return { pos, edges };
+  return { pos, edges, brain };
 }
 
 const sizeFor = (s: Skill) => (s.evidence.length >= 3 ? 1.125 : s.evidence.length === 2 ? 0.96 : 0.84);
@@ -119,7 +114,12 @@ export default function Connectome() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const S = { angleX: -0.35, angleY: 0.4, velX: 0.0009, velY: 0.0022, dragging: false, moved: 0, lastX: 0, lastY: 0 };
+    const REST_X = -0.32;
+    const S = { angleX: REST_X, angleY: 0.95, velX: 0, velY: 0.0022, dragging: false, moved: 0, lastX: 0, lastY: 0 };
+    const { points: mesh, segs: wires, shells } = graph.brain;
+    const mproj = mesh.map(() => ({ x: 0, y: 0, z: 0 }));
+    const BUCKETS = 6;
+    const paths: Path2D[] = [];
     const proj = graph.pos.map(() => ({ x: 0, y: 0, s: 1, z: 0 }));
     let w = 0;
     let h = 0;
@@ -137,7 +137,8 @@ export default function Connectome() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const widest = Math.max(...tagRefs.current.map((el) => el?.offsetWidth ?? 0));
       // projected points can reach ~1.2r; keep the widest label inside
-      rad = Math.max(120, Math.min((w / 2 - widest / 2 - 8) / 1.25, (h / 2 - 18) / 1.2, 260));
+      // the brain is wider than it is tall, so height allows a bigger radius
+      rad = Math.max(120, Math.min((w / 2 - widest / 2 - 8) / 1.2, (h / 2 - 18) / 0.95, 300));
     };
 
     const render = () => {
@@ -148,7 +149,9 @@ export default function Connectome() {
         S.angleY += S.velY * slow;
         S.angleX += S.velX * slow;
         S.velY += (0.0022 - S.velY) * 0.02;
-        S.velX += (0.0009 - S.velX) * 0.02;
+        S.velX *= 0.95;
+        // ease back upright so the brain never ends up upside down
+        S.angleX += (REST_X - S.angleX) * 0.015;
       }
       const cy = Math.cos(S.angleY);
       const sy = Math.sin(S.angleY);
@@ -165,8 +168,79 @@ export default function Connectome() {
         proj[i] = { x: w / 2 + x1 * rad * s, y: h / 2 + y2 * rad * s, s, z: z2 };
       });
 
-      // synapses
       ctx.clearRect(0, 0, w, h);
+
+      // brain folds, shaded by depth (front bright and thicker, back faint)
+      mesh.forEach((p, i) => {
+        const x1 = p.x * cy - p.z * sy;
+        const z1 = p.x * sy + p.z * cy;
+        const y2 = p.y * cxr - z1 * sxr;
+        const z2 = p.y * sxr + z1 * cxr;
+        const s = fov / (fov + z2 * rad);
+        mproj[i] = { x: w / 2 + x1 * rad * s, y: h / 2 + y2 * rad * s, z: z2 };
+      });
+      for (let b = 0; b < BUCKETS; b++) paths[b] = new Path2D();
+      for (const [a, b] of wires) {
+        const A = mproj[a];
+        const B = mproj[b];
+        const front = Math.max(0, Math.min(0.999, (1 - (A.z + B.z) / 2) / 2));
+        const path = paths[Math.floor(front * BUCKETS)];
+        path.moveTo(A.x, A.y);
+        path.lineTo(B.x, B.y);
+      }
+      const quiet = f !== "all" || fo !== null ? 0.55 : 1;
+      ctx.lineCap = "round";
+      for (let b = 0; b < BUCKETS; b++) {
+        const k = (b + 0.5) / BUCKETS;
+        ctx.lineWidth = 0.6 + 0.7 * k;
+        ctx.strokeStyle = `rgba(196,200,236,${((0.025 + 0.36 * k * k) * quiet).toFixed(3)})`;
+        ctx.stroke(paths[b]);
+      }
+
+      // outline: where the surface turns away from the camera (n · view = 0)
+      const vx = sy * cxr;
+      const vy = sxr;
+      const vz = cy * cxr;
+      const project = (p: V3) => {
+        const x1 = p.x * cy - p.z * sy;
+        const z1 = p.x * sy + p.z * cy;
+        const y2 = p.y * cxr - z1 * sxr;
+        const z2 = p.y * sxr + z1 * cxr;
+        const s = fov / (fov + z2 * rad);
+        return { x: w / 2 + x1 * rad * s, y: h / 2 + y2 * rad * s };
+      };
+      const outline = new Path2D();
+      for (const sh of shells) {
+        const d = sh.normals.map((n) => n.x * vx + n.y * vy + n.z * vz);
+        const idx = (i: number, j: number) => i * sh.lon + (j % sh.lon);
+        for (let i = 0; i < sh.lat; i++) {
+          for (let j = 0; j < sh.lon; j++) {
+            const c = [idx(i, j), idx(i, j + 1), idx(i + 1, j + 1), idx(i + 1, j)];
+            const hits: V3[] = [];
+            for (let e = 0; e < 4; e++) {
+              const a = c[e];
+              const b = c[(e + 1) % 4];
+              if (d[a] < 0 !== d[b] < 0) {
+                const t = d[a] / (d[a] - d[b]);
+                const A = sh.pts[a];
+                const B = sh.pts[b];
+                hits.push({ x: A.x + (B.x - A.x) * t, y: A.y + (B.y - A.y) * t, z: A.z + (B.z - A.z) * t });
+              }
+            }
+            for (let k = 0; k + 1 < hits.length; k += 2) {
+              const P = project(hits[k]);
+              const Q = project(hits[k + 1]);
+              outline.moveTo(P.x, P.y);
+              outline.lineTo(Q.x, Q.y);
+            }
+          }
+        }
+      }
+      ctx.lineWidth = 1.3;
+      ctx.strokeStyle = `rgba(214,218,246,${(0.42 * quiet).toFixed(3)})`;
+      ctx.stroke(outline);
+
+      // synapses
       ctx.lineWidth = 1;
       for (const e of graph.edges) {
         const A = proj[e.a];
@@ -328,7 +402,7 @@ export default function Connectome() {
                 view === v ? "bg-elev2 text-fg" : "text-faint hover:text-fg",
               )}
             >
-              {v}
+              {v === "sphere" ? "brain" : v}
             </button>
           ))}
         </div>
