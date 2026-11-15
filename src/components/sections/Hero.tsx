@@ -56,7 +56,7 @@ export default function Hero() {
             className="hero-reveal max-w-xl text-pretty text-base leading-relaxed text-muted sm:text-[1.0625rem]"
             style={{ ["--d" as string]: 3 }}
           >
-            Somewhere between engineering and neuroscience, I'm exploring how computation can help us understand the human brain. Still building and still questioning.
+            Somewhere between engineering and neuroscience, I&apos;m exploring how computation can help us understand the human brain. Still building and still questioning.
           </p>
         </div>
 

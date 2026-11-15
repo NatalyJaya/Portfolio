@@ -53,7 +53,7 @@ export default function About() {
             I&apos;m Nataly, a Computer Engineering student at the Universitat de Lleida
           </p>
           <p className="mt-6 max-w-2xl text-pretty leading-relaxed text-muted" data-reveal>
-            I've always been drawn to understanding how things work and what can be built with technology. My background is rooted in software engineering, but my curiosity has been leading me towards machine learning, healthcare, and computational neuroscience. I'm interested in exploring how computation can help us understand something as complex as the human brain.
+            I&apos;ve always been drawn to understanding how things work and what can be built with technology. My background is rooted in software engineering, but my curiosity has been leading me towards machine learning, healthcare, and computational neuroscience. I&apos;m interested in exploring how computation can help us understand something as complex as the human brain.
           </p>
 
           <div className="mt-14 grid gap-10 lg:grid-cols-2">
