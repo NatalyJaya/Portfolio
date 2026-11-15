@@ -362,10 +362,10 @@ export default function Timeline({ onOpenPhoto }: { onOpenPhoto: Open["photo"] }
         >
           <div className="tl-panel" data-on={active === null ? "" : undefined}>
             <p className="outline-num text-[clamp(5rem,8vw,7.5rem)] leading-[0.85]" aria-hidden="true">
-              {pad(events.length)}
+              {pad(6)}
             </p>
             <p className="label mt-5">
-              <span className="text-fg">{events.length} events</span>
+              <span className="text-fg">06 events</span>
               <span className="mx-2 text-line-strong">/</span>
               {span}
             </p>
