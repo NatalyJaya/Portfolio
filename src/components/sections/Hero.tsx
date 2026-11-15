@@ -1,4 +1,4 @@
-import NeuralField from "@/components/neural/NeuralField";
+import PluggedFigure from "@/components/hero/PluggedFigure";
 import { ArrowDown, Download, SocialIcon } from "@/components/ui/Icons";
 import { profile, socialById } from "@/content/profile";
 import { withBase } from "@/lib/utils";
@@ -22,7 +22,7 @@ export default function Hero() {
         }}
       />
       <div className="absolute inset-0 -z-10">
-        <NeuralField />
+        <PluggedFigure />
       </div>
       {/* Legibility scrim on the copy side */}
       <div
