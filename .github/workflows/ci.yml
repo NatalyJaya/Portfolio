@@ -39,6 +39,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # next-env.d.ts is gitignored; regenerate it so image imports type-check.
+      - name: Generate Next.js types
+        run: npx --no-install next typegen
+
       - name: Type check
         run: npm run typecheck
 
